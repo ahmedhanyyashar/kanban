@@ -1,0 +1,39 @@
+# Design decisions
+
+Short records of the choices that shaped the code: what was chosen, why, and what it costs. Newest decisions go at the bottom.
+
+## Index
+
+1. [Where it runs](#1-where-it-runs)
+2. [TypeScript and ESLint are held back](#2-typescript-and-eslint-are-held-back)
+3. [Browsers and screens under test](#3-browsers-and-screens-under-test)
+4. [Review and quality gates from the first pull request](#4-review-and-quality-gates-from-the-first-pull-request)
+5. [The codebase is documented in the repository](#5-the-codebase-is-documented-in-the-repository)
+
+## 1. Where it runs
+
+The web app is on Cloudflare Pages, the API on Render, the database on Neon.
+
+- **Why:** each has a free tier, the web app is a static build that a CDN serves, and nothing needs a network or a cluster to operate. The project is a frontend showcase; the host should not be the larger part of it.
+- **Alternatives:** a container platform on AWS (more to show, but it costs a few dollars a day); one host for everything (no CDN for the web app).
+- **Consequences:** the API's free plan sleeps when idle, so the first request after a pause is slow. The web app and the API are on different sites, so the sign-in cookie is third-party for the browser; a same-site route to the API (a Pages Function that forwards `/api`) is the way out if a browser blocks it. Decide when sign-in is built.
+
+## 2. TypeScript and ESLint are held back
+
+`typescript-eslint` supports TypeScript below 6.1 only, so the compiler is held at `~6.0.3`. The React, import and accessibility lint plugins support ESLint up to 9, so ESLint is held at `~9.39`. Both move when the plugins do. Three peer warnings remain (`nestjs-zod` and `@nestjs/swagger` ask for older Nest majors, `openapi-typescript` for TypeScript 5); they are warnings only and the code works with them.
+
+## 3. Browsers and screens under test
+
+End-to-end tests run on Chromium, Firefox and WebKit, and on a phone-sized Chromium, from the first test. The accessibility scan runs on Chromium only, because its findings do not depend on the engine. The signed-in specs (a board journey and every page behind the sign-in) also run on Chromium only, against the real API and a Postgres database, because they check how the screens and the API agree, not how an engine renders.
+
+## 4. Review and quality gates from the first pull request
+
+Lint, types, unit tests, build, API contract, end-to-end tests, accessibility, Lighthouse and commit messages are checked on every pull request. The pull request template lists what only a person can check.
+
+## 5. The codebase is documented in the repository
+
+A map ([architecture.md](architecture.md), with diagrams and a codemap), the decisions, the known limitations, a README for each app and package, and `AGENTS.md`: all Markdown, changed in the pull request that changes the code. `pnpm docs:check` fails CI when an app, package, web feature or API module is missing from the map.
+
+- **Why:** documentation in the repository is reviewed with the code, renders on GitHub and cannot be left behind by a separate system; a check keeps the one list that rots fastest, the map, complete.
+- **Alternatives:** a documentation site generator (a build, a host and a second place to update); a wiki (it drifts); generated reference for the apps (the OpenAPI document already describes the API, and the apps have no public code API).
+- **Consequences:** a site can be built later from the same files. Prose in the map is checked by people, not by the script.

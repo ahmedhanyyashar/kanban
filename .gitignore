@@ -1,0 +1,36 @@
+node_modules
+.pnp
+.pnp.js
+
+# Turborepo
+.turbo
+
+# Build outputs
+dist
+build
+
+.content-collections
+security/reports
+out
+*.tsbuildinfo
+
+# Testing
+coverage
+playwright-report
+test-results
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Editors
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
