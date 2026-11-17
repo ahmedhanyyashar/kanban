@@ -24,6 +24,8 @@ Before declaring a change done run `pnpm lint`, `pnpm check-types` and `pnpm tes
 
 - **TypeScript only**, strict. No `any`, no type assertions (`as`), no `console.log`.
 - **Environment:** read configuration only through a validated env module, never `process.env` or `import.meta.env` directly. A new variable goes in the schema and in `.env.example`.
+- **UI:** components come from `@repo/ui`, used as they are (no size or radius overrides); add one with the shadcn CLI. Colours come from theme tokens. Icon-only controls get a `title` and an `aria-label`.
+- **Accessibility** is part of the work: one `h1` and one `main` per page, a keyboard path for every action, contrast in both themes.
 
 ## Documentation
 
