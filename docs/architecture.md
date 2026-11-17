@@ -19,7 +19,8 @@ Keep it current: a pull request that adds or moves an app, package, web feature 
 
 ### `packages`
 
-| Path                         | What it holds               |
-| ---------------------------- | --------------------------- |
-| `packages/eslint-config`     | The shared ESLint configs   |
-| `packages/typescript-config` | The shared `tsconfig` bases |
+| Path                         | What it holds                                                           |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| `packages/ui`                | The design system: the theme (`src/globals.css`), components and blocks |
+| `packages/eslint-config`     | The shared ESLint configs                                               |
+| `packages/typescript-config` | The shared `tsconfig` bases                                             |
