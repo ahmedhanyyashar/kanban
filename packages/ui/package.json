@@ -20,7 +20,13 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-ui/react": "catalog:",
+    "class-variance-authority": "catalog:",
+    "cmdk": "catalog:",
     "cn": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "sonner": "catalog:",
     "tw-animate-css": "catalog:"
   },
   "peerDependencies": {
