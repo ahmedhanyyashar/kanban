@@ -46,20 +46,21 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 
 Start at `src/main.tsx` (mounts the app), `src/components/providers.tsx` (theme, query cache, motion, toasts) and `src/router.tsx` (every route).
 
-| Path                            | What it holds                                                                                                        |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `src/pages`                     | One file per route; they compose features and hold no data logic                                                     |
-| `src/layouts`                   | The signed-in shell: session guard, sidebar, user menu                                                               |
-| `apps/web/src/features/boards`  | Boards and the kanban board: `api` (calls), `hooks` (queries, mutations, realtime), `lib` (pure logic), `components` |
-| `apps/web/src/features/tasks`   | Tasks: the dialog and form, the mutations, due dates and priorities                                                  |
-| `apps/web/src/features/landing` | The public page: navbar, hero, features, how it works, the AI section and the footer                                 |
-| `apps/web/src/features/users`   | The avatar                                                                                                           |
-| `src/lib`                       | The API and auth clients (the session-ended handling is here) and the safe return address after sign-in              |
-| `src/providers`                 | The query client                                                                                                     |
-| `src/hooks`                     | Hooks used across pages, such as the page title                                                                      |
-| `src/env.ts`                    | The validated environment (`VITE_*` values are public: Vite inlines them)                                            |
-| `e2e`                           | Playwright specs: sign-up and sign-in, public-page accessibility, every signed-in page                               |
-| `src/router.tsx`                | The routes, and the boundary that shows a message when a page fails to render and clears it on navigation            |
+| Path                              | What it holds                                                                                                        |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `src/pages`                       | One file per route; they compose features and hold no data logic                                                     |
+| `src/layouts`                     | The signed-in shell: session guard, sidebar, user menu                                                               |
+| `apps/web/src/features/boards`    | Boards and the kanban board: `api` (calls), `hooks` (queries, mutations, realtime), `lib` (pure logic), `components` |
+| `apps/web/src/features/tasks`     | Tasks: the dialog and form, the mutations, due dates and priorities                                                  |
+| `apps/web/src/features/workspace` | Pieces shared by the workspace pages, such as the stat card                                                          |
+| `apps/web/src/features/landing`   | The public page: navbar, hero, features, how it works, the AI section and the footer                                 |
+| `apps/web/src/features/users`     | The avatar                                                                                                           |
+| `src/lib`                         | The API and auth clients (the session-ended handling is here) and the safe return address after sign-in              |
+| `src/providers`                   | The query client                                                                                                     |
+| `src/hooks`                       | Hooks used across pages, such as the page title                                                                      |
+| `src/env.ts`                      | The validated environment (`VITE_*` values are public: Vite inlines them)                                            |
+| `e2e`                             | Playwright specs: sign-up and sign-in, public-page accessibility, every signed-in page                               |
+| `src/router.tsx`                  | The routes, and the boundary that shows a message when a page fails to render and clears it on navigation            |
 
 ### `packages`
 
