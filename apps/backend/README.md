@@ -30,7 +30,7 @@ Every response is `{ success: true, data }`, or `{ success: false, error: { code
 
 ## Database
 
-The schema is `prisma/schema.prisma`; the client is generated into `src/generated` (not committed) by `build`, `dev`, `lint`, `check-types` and `test`. Prisma 7 needs a driver adapter, which `PrismaService` provides. The only input is `DATABASE_URL`, a connection string for any PostgreSQL: the one in `compose.yaml` locally, a hosted one in production.
+The schema is `prisma/schema.prisma`; the client is generated into `src/generated` (not committed) by `build`, `dev`, `lint`, `check-types` and `test`. Prisma 7 needs a driver adapter, which `PrismaService` provides. The end-to-end setup applies the committed migrations to a new database and fails when they do not produce the schema, so a schema change without its migration is caught. The only input is `DATABASE_URL`, a connection string for any PostgreSQL: the one in `compose.yaml` locally, a hosted one in production.
 
 ## Sign-in
 

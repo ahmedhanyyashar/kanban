@@ -28,7 +28,8 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | `src/lib/auth`                                           | The sign-in setup (email and password, optional Google) and its rate limits                               |
 | `src/openapi.ts`, `export-openapi.ts`                    | The OpenAPI document: served at `/docs` outside production, written to `docs/openapi.json` for the client |
 | `src/lib/database`                                       | The shared Prisma service                                                                                 |
-| `prisma`                                                 | `schema.prisma`; the migrations are committed beside it                                                   |
+| `prisma`                                                 | `schema.prisma` (auth, boards, columns, tasks, activity); the migrations are committed beside it          |
+| `src/lib/serialization`                                  | Converts database decimals to numbers at the boundary                                                     |
 | `src/lib/filters`, `interceptors`                        | The error shape and the `{ success, data }` envelope, applied to every route                              |
 | `src/lib/logger`, `request-id`, `rate-limit`, `shutdown` | Logging, request ids, the default rate limit, graceful shutdown                                           |
 | `Dockerfile`                                             | The production image of the API (Node 24, non-root); it applies the migrations when it starts             |

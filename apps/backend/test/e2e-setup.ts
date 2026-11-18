@@ -14,6 +14,16 @@ export default async function setup() {
     env: { ...process.env, DATABASE_URL: url },
     stdio: "inherit",
   });
+  // The committed migrations must produce the schema the client was generated from: a schema change
+  // without its migration fails here, not in production.
+  execSync(
+    "pnpm exec prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --exit-code",
+    {
+      cwd: path.resolve(__dirname, ".."),
+      env: { ...process.env, DATABASE_URL: url },
+      stdio: "inherit",
+    },
+  );
   // Test workers start after this and inherit it.
   process.env["DATABASE_URL"] = url;
 
