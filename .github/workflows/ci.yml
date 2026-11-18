@@ -84,6 +84,19 @@ jobs:
       - run: pnpm turbo run build
 
   # Pull requests are rebase-merged, so every commit lands on main as written: each message is checked.
+  # The OpenAPI document and the client types are committed; a controller change that did not regenerate them fails here.
+  api-contract:
+    needs: [changes]
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: ./.github/actions/setup
+      - run: pnpm api:generate
+      - name: The committed API contract is current
+        run: git diff --exit-code -- docs/openapi.json packages/api-client/src/generated
+
   commits:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

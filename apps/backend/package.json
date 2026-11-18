@@ -14,12 +14,14 @@
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset --force",
-    "seed": "tsx --env-file=.env scripts/seed.ts"
+    "seed": "tsx --env-file=.env scripts/seed.ts",
+    "export:openapi": "node --env-file=.env.example dist/export-openapi"
   },
   "dependencies": {
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/platform-express": "catalog:",
+    "@nestjs/swagger": "catalog:",
     "@opentelemetry/exporter-trace-otlp-http": "catalog:",
     "@opentelemetry/instrumentation-express": "catalog:",
     "@opentelemetry/instrumentation-http": "catalog:",

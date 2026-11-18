@@ -1,0 +1,21 @@
+{
+  "name": "@repo/api-client",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "generate": "openapi-typescript ../../docs/openapi.json -o ./src/generated/schema.ts"
+  },
+  "dependencies": {
+    "openapi-fetch": "catalog:"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "openapi-typescript": "catalog:",
+    "typescript": "catalog:"
+  }
+}

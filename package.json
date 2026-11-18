@@ -17,7 +17,8 @@
     "db:up": "docker compose up -d --wait database",
     "db:deploy": "node --env-file=apps/backend/.env -e \"require('child_process').execSync('pnpm --filter backend run db:deploy',{stdio:'inherit'})\"",
     "db:down": "docker compose down",
-    "auth:seed": "pnpm --filter backend seed"
+    "auth:seed": "pnpm --filter backend seed",
+    "api:generate": "pnpm turbo run build --filter=backend && pnpm --filter backend export:openapi && pnpm --filter @repo/api-client generate"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",

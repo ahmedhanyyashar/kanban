@@ -1,6 +1,6 @@
 # backend
 
-NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Zod-validated config (`src/env.ts`), sign-in with better-auth, rate limiting, health probes and PostgreSQL through Prisma 7.
+NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Swagger docs (`/docs`), Zod-validated config (`src/env.ts`), sign-in with better-auth, rate limiting, health probes and PostgreSQL through Prisma 7.
 
 ## Scripts
 
