@@ -11,8 +11,9 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "src/generated/**"],
       "outputs": ["dist/**"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "src/generated/**"]
+      "env": ["VITE_*"]
     },
     "lint": {
       "dependsOn": ["^build"]

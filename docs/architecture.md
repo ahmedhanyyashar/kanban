@@ -42,6 +42,18 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | `scripts/seed.ts`                                        | An account for each role and, outside production, a sample board                                          |
 | `test`                                                   | Tests that boot the app                                                                                   |
 
+### `apps/web`: the single-page app
+
+Start at `src/main.tsx` (mounts the app), `src/components/providers.tsx` (theme, query cache, motion, toasts) and `src/router.tsx` (every route).
+
+| Path             | What it holds                                                                                             |
+| ---------------- | --------------------------------------------------------------------------------------------------------- |
+| `src/pages`      | One file per route; they compose features and hold no data logic                                          |
+| `src/providers`  | The query client                                                                                          |
+| `src/hooks`      | Hooks used across pages, such as the page title                                                           |
+| `src/env.ts`     | The validated environment (`VITE_*` values are public: Vite inlines them)                                 |
+| `src/router.tsx` | The routes, and the boundary that shows a message when a page fails to render and clears it on navigation |
+
 ### `packages`
 
 | Path                         | What it holds                                                           |
