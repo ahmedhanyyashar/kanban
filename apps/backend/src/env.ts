@@ -11,6 +11,11 @@ export const envSchema = z.object({
   DATABASE_URL: z.url(),
   BETTER_AUTH_SECRET: z.string().min(32),
   BETTER_AUTH_URL: z.url(),
+  // the registrable domain, with a leading dot, when the web app and the API are subdomains of it
+  COOKIE_DOMAIN: z
+    .string()
+    .regex(/^.[a-z0-9.-]+$/)
+    .optional(),
   GOOGLE_CLIENT_ID: z.string().min(1).optional(),
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
   LLM_API_KEY: z.string().min(1).optional(),
