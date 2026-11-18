@@ -1,7 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { parseAsString, parseAsStringLiteral, useQueryStates } from "nuqs";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
+import {
+  useBoardSummary,
+  useBreakdownTask,
+  useGenerateTasks,
+} from "@/features/ai/hooks/use-ai";
+import type { TaskSuggestion } from "@/features/ai/lib/generate-form";
 import { getActivities } from "@/features/boards/api/boards";
 import { boardKeys } from "@/features/boards/api/keys";
 import {
@@ -11,6 +18,7 @@ import {
 import { useTaskMutations } from "@/features/tasks/hooks/use-task-mutations";
 import { PRIORITIES } from "@/features/tasks/lib/priority";
 import type { TaskInput } from "@/features/tasks/lib/task-form";
+import { errorMessage } from "@/lib/error-message";
 
 import { useBoardRealtime } from "./use-board-realtime";
 import { useBoard } from "./use-boards";
@@ -20,6 +28,8 @@ import { useMemberMutations } from "./use-member-mutations";
 /** Which dialog is open, and for what. At most one is. */
 export type BoardDialog =
   | { kind: "task"; taskId: string | null; columnId: string }
+  | { kind: "ai"; columnId: string }
+  | { kind: "summary" }
   | { kind: "members" }
   | { kind: "activity" }
   | { kind: "addColumn" };
@@ -31,6 +41,8 @@ export function useBoardPage(boardId: string) {
   const taskMutations = useTaskMutations(boardId);
   const columnMutations = useColumnMutations(boardId);
   const memberMutations = useMemberMutations(boardId);
+  const generate = useGenerateTasks(boardId);
+  const breakdown = useBreakdownTask(boardId);
 
   const [dialog, setDialog] = useState<BoardDialog | null>(null);
   const closeDialog = () => setDialog(null);
@@ -60,6 +72,16 @@ export function useBoardPage(boardId: string) {
     [tasks, params.q, params.priority, params.assignee],
   );
 
+  const summary = useBoardSummary(boardId, dialog?.kind === "summary");
+  useEffect(() => {
+    if (!summary.isError) return;
+    toast.error(
+      errorMessage(summary.error, "The summary could not be written."),
+    );
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- closes the dialog when its request fails
+    setDialog(null);
+  }, [summary.isError, summary.error]);
+
   const activities = useQuery({
     queryKey: boardKeys.activities(boardId),
     queryFn: () => getActivities(boardId),
@@ -87,6 +109,27 @@ export function useBoardPage(boardId: string) {
     else await taskMutations.create.mutateAsync(input);
   };
 
+  /** Adds tasks one after another, so each lands after the last in its column. */
+  const addTasks = async (
+    columnId: string,
+    drafts: Pick<TaskSuggestion, "title" | "description" | "priority">[],
+  ) => {
+    for (const draft of drafts)
+      await taskMutations.create.mutateAsync({ columnId, ...draft });
+  };
+
+  const breakDown = async (taskId: string) => {
+    const task = tasks?.find((t) => t.id === taskId);
+    if (!task) return;
+    try {
+      const subtasks = await breakdown.mutateAsync(taskId);
+      await addTasks(task.columnId, subtasks);
+      toast.success(`Added ${subtasks.length} subtasks`);
+    } catch (error) {
+      toast.error(errorMessage(error, "The task could not be broken down."));
+    }
+  };
+
   return {
     board,
     others,
@@ -97,11 +140,16 @@ export function useBoardPage(boardId: string) {
     changeFilters,
     visibleTasks,
     editing,
+    summary: summary.data,
     activities: activities.data,
     moveTask: (taskId: string, columnId: string, position: number) =>
       taskMutations.move.mutate({ taskId, columnId, position }),
     deleteTask: (taskId: string) => taskMutations.remove.mutate(taskId),
     saveTask,
+    breakDown,
+    breakingDown: breakdown.isPending,
+    generateTasks: generate.mutateAsync,
+    addTasks,
     addColumn: async (title: string) => {
       await columnMutations.create.mutateAsync({ title });
     },

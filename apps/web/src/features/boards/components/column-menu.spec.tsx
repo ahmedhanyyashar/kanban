@@ -10,6 +10,7 @@ function open(taskCount: number) {
     <ColumnMenu
       title="To do"
       taskCount={taskCount}
+      onAiGenerate={vi.fn()}
       onRename={vi.fn()}
       onDelete={vi.fn()}
     />,

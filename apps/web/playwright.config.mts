@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const signedIn = [
+  "**/ai.spec.ts",
   "**/auth.spec.ts",
   "**/journey.spec.ts",
   "**/signed-in.spec.ts",

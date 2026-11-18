@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash2 } from "lucide-react";
+import { GitBranch, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm, type Control } from "react-hook-form";
 import { toast } from "sonner";
@@ -47,6 +47,8 @@ type TaskFormProps = {
   /** Edit only. */
   onDelete: () => void;
   /** Edit only. */
+  onBreakdown: () => void;
+  breakingDown: boolean;
 };
 
 export function TaskForm({
@@ -56,6 +58,8 @@ export function TaskForm({
   members,
   onSubmit,
   onDelete,
+  onBreakdown,
+  breakingDown,
 }: TaskFormProps) {
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
@@ -168,13 +172,24 @@ export function TaskForm({
 
           <DialogFooter>
             {task && (
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={() => setConfirmOpen(true)}
-              >
-                <Trash2 /> Delete
-              </Button>
+              <>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => setConfirmOpen(true)}
+                >
+                  <Trash2 /> Delete
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onBreakdown}
+                  disabled={breakingDown}
+                >
+                  <GitBranch />
+                  {breakingDown ? "Breaking down…" : "AI breakdown"}
+                </Button>
+              </>
             )}
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {task ? "Save" : "Create task"}

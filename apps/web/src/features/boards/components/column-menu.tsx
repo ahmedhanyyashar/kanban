@@ -1,4 +1,4 @@
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Sparkles, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { ConfirmDeleteDialog } from "@repo/ui/blocks/confirm-delete-dialog";
@@ -15,6 +15,7 @@ type ColumnMenuProps = {
   title: string;
   /** A column with tasks cannot be deleted: the API refuses until it is empty. */
   taskCount: number;
+  onAiGenerate: () => void;
   onRename: () => void;
   onDelete: () => void;
 };
@@ -22,6 +23,7 @@ type ColumnMenuProps = {
 export function ColumnMenu({
   title,
   taskCount,
+  onAiGenerate,
   onRename,
   onDelete,
 }: ColumnMenuProps) {
@@ -43,6 +45,9 @@ export function ColumnMenu({
           <MoreHorizontal />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={onAiGenerate}>
+            <Sparkles /> Generate with AI
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={onRename}>
             <Pencil /> Rename
           </DropdownMenuItem>

@@ -6,6 +6,8 @@ import { EmptyState } from "@repo/ui/blocks/empty-state";
 import { PageHeader } from "@repo/ui/blocks/page-header";
 import { Skeleton } from "@repo/ui/components/skeleton";
 
+import { AiGenerateDialog } from "@/features/ai/components/ai-generate-dialog";
+import { AiSummaryDialog } from "@/features/ai/components/ai-summary-dialog";
 import { ActivitySheet } from "@/features/boards/components/activity-sheet";
 import { AddColumnDialog } from "@/features/boards/components/add-column-dialog";
 import { BoardActions } from "@/features/boards/components/board-actions";
@@ -64,6 +66,7 @@ function BoardContent({ boardId }: { boardId: string }) {
         action={
           <BoardActions
             others={page.others}
+            onSummary={() => page.setDialog({ kind: "summary" })}
             onMembers={() => page.setDialog({ kind: "members" })}
             onActivity={() => page.setDialog({ kind: "activity" })}
           />
@@ -92,6 +95,7 @@ function BoardContent({ boardId }: { boardId: string }) {
           onAddTask={(columnId) =>
             page.setDialog({ kind: "task", taskId: null, columnId })
           }
+          onAiGenerate={(columnId) => page.setDialog({ kind: "ai", columnId })}
           onAddColumn={() => page.setDialog({ kind: "addColumn" })}
           onRenameColumn={page.renameColumn}
           onDeleteColumn={page.deleteColumn}
@@ -109,6 +113,21 @@ function BoardContent({ boardId }: { boardId: string }) {
         members={members}
         onSubmit={page.saveTask}
         onDelete={page.deleteTask}
+        onBreakdown={(taskId) => void page.breakDown(taskId)}
+        breakingDown={page.breakingDown}
+      />
+      <AiGenerateDialog
+        open={dialog?.kind === "ai"}
+        onOpenChange={onOpenChange}
+        columns={columns}
+        defaultColumnId={dialog?.kind === "ai" ? dialog.columnId : firstColumn}
+        onGenerate={page.generateTasks}
+        onAdd={(tasks, columnId) => page.addTasks(columnId, tasks)}
+      />
+      <AiSummaryDialog
+        open={dialog?.kind === "summary"}
+        onOpenChange={onOpenChange}
+        summary={page.summary}
       />
       <MembersDialog
         open={dialog?.kind === "members"}
