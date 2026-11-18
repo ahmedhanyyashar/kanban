@@ -22,5 +22,6 @@ Keep it current: a pull request that adds or moves an app, package, web feature 
 | Path                         | What it holds                                                           |
 | ---------------------------- | ----------------------------------------------------------------------- |
 | `packages/ui`                | The design system: the theme (`src/globals.css`), components and blocks |
+| `packages/shared`            | What the API and the web app agree on: roles and the error shape        |
 | `packages/eslint-config`     | The shared ESLint configs                                               |
 | `packages/typescript-config` | The shared `tsconfig` bases                                             |
