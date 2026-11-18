@@ -54,17 +54,18 @@
     "@nestjs/testing": "catalog:",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@testcontainers/postgresql": "catalog:",
     "@types/express": "catalog:",
     "@types/node": "catalog:",
+    "@types/pg": "catalog:",
     "@types/supertest": "catalog:",
     "eslint": "catalog:",
+    "socket.io-client": "catalog:",
     "supertest": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:",
-    "vitest-mock-extended": "catalog:",
-    "@types/pg": "catalog:",
-    "@testcontainers/postgresql": "catalog:",
-    "tsx": "catalog:"
+    "vitest-mock-extended": "catalog:"
   },
   "files": [
     "dist",
