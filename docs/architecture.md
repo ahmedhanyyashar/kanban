@@ -38,7 +38,7 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | `src/lib/logger`, `request-id`, `rate-limit`, `shutdown` | Logging, request ids, the default rate limit, graceful shutdown                                           |
 | `Dockerfile`                                             | The production image of the API (Node 24, non-root); it applies the migrations when it starts             |
 | `src/instrumentation.ts`                                 | OpenTelemetry tracing, started only when an endpoint is configured                                        |
-| `scripts/seed.ts`                                        | An account for each role                                                                                  |
+| `scripts/seed.ts`                                        | An account for each role and, outside production, a sample board                                          |
 | `test`                                                   | Tests that boot the app                                                                                   |
 
 ### `packages`
