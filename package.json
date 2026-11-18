@@ -16,7 +16,8 @@
     "prepare": "husky",
     "db:up": "docker compose up -d --wait database",
     "db:deploy": "node --env-file=apps/backend/.env -e \"require('child_process').execSync('pnpm --filter backend run db:deploy',{stdio:'inherit'})\"",
-    "db:down": "docker compose down"
+    "db:down": "docker compose down",
+    "auth:seed": "pnpm --filter backend seed"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",

@@ -19,6 +19,8 @@ export default defineConfig({
       TRUST_PROXY: "0",
       TRUSTED_ORIGINS: "http://localhost:3100",
       DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/kanban",
+      BETTER_AUTH_SECRET: "local-development-secret-at-least-32-characters",
+      BETTER_AUTH_URL: "http://localhost:3001",
     },
   },
 });

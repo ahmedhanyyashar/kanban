@@ -25,11 +25,13 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | -------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | `src/env.ts`                                             | The validated environment; the only place that reads `process.env`           |
 | `apps/backend/src/modules/health`                        | Liveness and readiness (readiness asks the database)                         |
+| `src/lib/auth`                                           | The sign-in setup (email and password, optional Google) and its rate limits  |
 | `src/lib/database`                                       | The shared Prisma service                                                    |
 | `prisma`                                                 | `schema.prisma`; the migrations are committed beside it                      |
 | `src/lib/filters`, `interceptors`                        | The error shape and the `{ success, data }` envelope, applied to every route |
 | `src/lib/logger`, `request-id`, `rate-limit`, `shutdown` | Logging, request ids, the default rate limit, graceful shutdown              |
 | `src/instrumentation.ts`                                 | OpenTelemetry tracing, started only when an endpoint is configured           |
+| `scripts/seed.ts`                                        | An account for each role                                                     |
 | `test`                                                   | Tests that boot the app                                                      |
 
 ### `packages`

@@ -1,6 +1,6 @@
 # backend
 
-NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Zod-validated config (`src/env.ts`), rate limiting, health probes and PostgreSQL through Prisma 7.
+NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Zod-validated config (`src/env.ts`), sign-in with better-auth, rate limiting, health probes and PostgreSQL through Prisma 7.
 
 ## Scripts
 
@@ -30,6 +30,10 @@ Every response is `{ success: true, data }`, or `{ success: false, error: { code
 ## Database
 
 The schema is `prisma/schema.prisma`; the client is generated into `src/generated` (not committed) by `build`, `dev`, `lint`, `check-types` and `test`. Prisma 7 needs a driver adapter, which `PrismaService` provides. The only input is `DATABASE_URL`, a connection string for any PostgreSQL: the one in `compose.yaml` locally, a hosted one in production.
+
+## Sign-in
+
+better-auth keeps accounts and sessions in the four auth tables (`prisma/migrations/0001_init`). Email and password work always; Google sign-in turns on when both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set. Every route needs a session unless it says `@AllowAnonymous()`. Sign-in and sign-up are limited to 5 requests a minute per address, in every environment. `pnpm auth:seed` creates an account per role (`<role>@example.com`); the password is `SEED_PASSWORD`, which outside production defaults to `password1234`.
 
 ## Health
 

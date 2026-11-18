@@ -13,7 +13,8 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
-    "db:reset": "prisma migrate reset --force"
+    "db:reset": "prisma migrate reset --force",
+    "seed": "tsx --env-file=.env scripts/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "catalog:",
@@ -31,10 +32,13 @@
     "pino-pretty": "catalog:",
     "rxjs": "catalog:",
     "zod": "catalog:",
+    "@repo/shared": "workspace:*",
     "@prisma/client": "catalog:",
     "pg": "catalog:",
     "@prisma/adapter-pg": "catalog:",
     "@prisma/instrumentation": "catalog:",
+    "better-auth": "catalog:",
+    "@thallesp/nestjs-better-auth": "catalog:",
     "@nestjs/throttler": "catalog:"
   },
   "devDependencies": {
@@ -51,6 +55,7 @@
     "vitest": "catalog:",
     "prisma": "catalog:",
     "dotenv": "catalog:",
-    "@types/pg": "catalog:"
+    "@types/pg": "catalog:",
+    "tsx": "catalog:"
   }
 }

@@ -1,4 +1,5 @@
 import { Controller, Get, HttpStatus, Res } from "@nestjs/common";
+import { AllowAnonymous } from "@thallesp/nestjs-better-auth";
 import type { Response } from "express";
 
 import { PrismaService } from "@/lib/database/prisma.service";
@@ -9,6 +10,7 @@ interface HealthStatus {
   checks: Record<string, "ok" | "error">;
 }
 
+@AllowAnonymous()
 @Controller("health")
 export class HealthController {
   constructor(private readonly prismaService: PrismaService) {}
