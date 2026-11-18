@@ -94,10 +94,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
       ({ status, code, message } = prisma);
     }
 
-    this.logger.error(
-      `${req.method} ${req.url} ${status} - ${Array.isArray(message) ? message.join(", ") : message}`,
-      exception instanceof Error ? exception.stack : undefined,
-    );
+    const line = `${req.method} ${req.url} ${status} - ${Array.isArray(message) ? message.join(", ") : message}`;
+    // a caller's mistake (4xx) is a warning without a stack; only a server failure (5xx) is an error
+    if (status >= 500)
+      this.logger.error(
+        line,
+        exception instanceof Error ? exception.stack : undefined,
+      );
+    else this.logger.warn(line);
 
     const error: ApiErrorBody = {
       code,
