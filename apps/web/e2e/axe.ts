@@ -38,13 +38,32 @@ export async function checkA11y(page: Page) {
  * that is still fading in: the scroll starts the reveals, and contrast is computed from what is drawn.
  */
 export async function settle(page: Page) {
+  // twice: the library that reveals sections starts watching the scroll only after the page has
+  // mounted, so a first pass made while it loads can go by unseen
+  for (let pass = 0; pass < 2; pass++)
+    await page.evaluate(async () => {
+      const step = Math.max(window.innerHeight / 2, 200);
+      for (let y = 0; y < document.body.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+      window.scrollTo(0, 0);
+    });
+  // a reveal driven by script (not by the browser's animation engine) leaves its opacity in the element's
+  // style while it runs: wait until those opacities stop changing, for at most five seconds
   await page.evaluate(async () => {
-    const step = Math.max(window.innerHeight / 2, 200);
-    for (let y = 0; y < document.body.scrollHeight; y += step) {
-      window.scrollTo(0, y);
-      await new Promise((resolve) => setTimeout(resolve, 120));
+    const sample = () =>
+      [...document.querySelectorAll('[style*="opacity"]')]
+        .map((element) => getComputedStyle(element).opacity)
+        .join(",");
+    let last = sample();
+    let still = 0;
+    for (let i = 0; i < 50 && still < 3; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      const now = sample();
+      still = now === last ? still + 1 : 0;
+      last = now;
     }
-    window.scrollTo(0, 0);
   });
   // an animation that loops for ever (a drifting background) never ends and is not waited for
   await page.waitForFunction(() =>
