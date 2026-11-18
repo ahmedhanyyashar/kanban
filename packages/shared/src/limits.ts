@@ -5,4 +5,5 @@ export const LIMITS = {
   columnTitle: 100,
   taskTitle: 255,
   taskDescription: 5000,
+  aiGoal: 5000,
 } as const;
