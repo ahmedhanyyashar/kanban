@@ -11,7 +11,7 @@ const api = createApiClient({
   baseUrl: "http://localhost:3001",
   credentials: "include",
 });
-const { data } = await api.GET("/health/live"); // paths and response types come from the spec
+const { data, error } = await api.GET("/boards"); // paths and response types come from the spec
 ```
 
 ## Regenerate after the API changes
