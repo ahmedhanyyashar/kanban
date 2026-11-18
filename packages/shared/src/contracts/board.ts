@@ -81,6 +81,20 @@ export const activitySchema = z.object({
   }),
 });
 
+export const taskSuggestionSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  priority: prioritySchema,
+});
+
+export const boardSummarySchema = z.object({
+  headline: z.string(),
+  completed: z.array(z.string()),
+  inProgress: z.array(z.string()),
+  risks: z.array(z.string()),
+  recommendations: z.array(z.string()),
+});
+
 /** The success envelope every route answers with. */
 export function envelope<T extends z.ZodType>(data: T) {
   return z.object({ success: z.literal(true), data });

@@ -4,13 +4,13 @@ What the API and the web app must agree on, in one place.
 
 ## What is in it
 
-| Path                         | What it holds                                                                                          |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `src/contracts/api-error.ts` | The error shape                                                                                        |
-| `src/permissions.ts`         | The access control statements for the auth library's roles                                             |
-| `src/contracts/board.ts`     | The zod schemas for boards, columns, tasks, members and activity, and the `{ success, data }` envelope |
-| `src/board-role.ts`          | The board roles (owner, admin, member) and `canManageMembers`                                          |
-| `src/limits.ts`              | The text length limits that the API validates and the forms enforce                                    |
+| Path                         | What it holds                                                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `src/contracts/board.ts`     | The zod schemas for boards, columns, tasks, members, activity, suggestions and summaries, and the `{ success, data }` envelope |
+| `src/contracts/api-error.ts` | The error shape                                                                                                                |
+| `src/board-role.ts`          | The board roles (owner, admin, member) and `canManageMembers`                                                                  |
+| `src/permissions.ts`         | The access control statements for the auth library's roles                                                                     |
+| `src/limits.ts`              | The text length limits that the API validates and the forms enforce                                                            |
 
 ## Using it
 
