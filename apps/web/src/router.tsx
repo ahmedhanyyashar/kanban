@@ -8,6 +8,7 @@ import {
 import { ErrorBoundary } from "@repo/ui/blocks/error-boundary";
 
 import { ShellLayout } from "@/layouts/shell";
+import { LandingPage } from "@/pages/landing";
 import { NotFoundPage } from "@/pages/not-found";
 import { SettingsPage } from "@/pages/settings";
 import { SignInPage } from "@/pages/sign-in";
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
   {
     element: <Root />,
     children: [
+      { path: "/", element: <LandingPage /> },
       { path: "/sign-in", element: <SignInPage /> },
       { path: "/sign-up", element: <SignUpPage /> },
       {
