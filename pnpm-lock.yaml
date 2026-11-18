@@ -480,6 +480,9 @@ importers:
       '@repo/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@repo/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
