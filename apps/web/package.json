@@ -27,6 +27,7 @@
     "react-router": "catalog:",
     "react-hook-form": "catalog:",
     "@hookform/resolvers": "catalog:",
+    "socket.io-client": "catalog:",
     "sonner": "catalog:",
     "better-auth": "catalog:",
     "@repo/shared": "workspace:*"
