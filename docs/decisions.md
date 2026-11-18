@@ -11,6 +11,8 @@ Short records of the choices that shaped the code: what was chosen, why, and wha
 5. [The codebase is documented in the repository](#5-the-codebase-is-documented-in-the-repository)
 6. [The API contract is declared once and typed end to end](#6-the-api-contract-is-declared-once-and-typed-end-to-end)
 7. [AI output is a draft: validated, limited and previewed](#7-ai-output-is-a-draft-validated-limited-and-previewed)
+8. [Accessibility is checked at four levels](#8-accessibility-is-checked-at-four-levels)
+9. [A session that ends is noticed everywhere it was in use](#9-a-session-that-ends-is-noticed-everywhere-it-was-in-use)
 
 ## 1. Where it runs
 
@@ -55,3 +57,17 @@ Every model call goes through `AiService`. Task suggestions are drafts: the web 
 - **Why:** a model call is slow, paid and not deterministic; each rule keeps one failure from becoming the product's failure.
 - **Checks:** unit tests of the error mapping and the prompt with the provider stubbed; end-to-end tests of the routes with the model stubbed; the real provider by hand.
 - **Consequences:** quality depends on the model, there is no quota per person or cost cap, and the model name is an alias that is tried by hand before a release.
+
+## 8. Accessibility is checked at four levels
+
+Lint (`jsx-a11y`) catches mistakes while typing; Vitest with axe-core checks a component's roles, names and structure in jsdom; Playwright with axe scans the real pages in light and dark and drives the keyboard; Lighthouse gates the score. The palette's contrast is tested where it is defined (`theme.contrast.spec.ts`), because a browser scan cannot reach every state or theme.
+
+- **Why:** each level sees what the others cannot (jsdom has no layout or colour, a page scan cannot reach a closed dialog, automated tools find about a third of the issues). Keyboard and screen-reader review stays manual.
+- **Conventions:** a link that looks like a button is a `ButtonLink` (a real anchor); every page has one `main` and a skip link; icon-only controls carry a name; motion follows the visitor's reduce-motion setting; drag and drop works from the keyboard and announces names, not ids.
+- **Consequences:** a theme change that breaks a contrast pair fails a unit test; the board's keyboard drag has no automated test until a page renders it in a browser.
+
+## 9. A session that ends is noticed everywhere it was in use
+
+- **Decision:** one refusal for a missing session (a 401 on any API call) asks the session store to look again, and the layout around signed-in pages then clears the cached data and sends the person to sign in. The API socket checks every connected session every 30 seconds and drops the ones that ended; the browser looks at its session when the server drops it.
+- **Why:** a session can end where no open tab hears of it (another device, expiry, a revoke). Without this the tab kept showing a board, toasted "Unauthorized", and kept receiving that board's live updates; and cached data stayed in memory for the next person to sign in on the tab.
+- **Checks:** `board.gateway.spec.ts` (the sweep), `api-client.spec.ts` (the 401 path) and a Playwright test that ends the session over the API while the tab stays open.
