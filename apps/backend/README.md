@@ -40,6 +40,10 @@ better-auth keeps accounts and sessions in the four auth tables (`prisma/migrati
 
 Every route under `/boards/:boardId` passes `BoardAccessGuard`: 400 for a malformed id, 404 for a board that does not exist, 403 for someone who is not on it. A person is `owner`, `admin` or `member` (`@repo/shared/board-role`); owners and admins manage members, and only the owner deletes the board. Adding and removing members is recorded in the activity feed, and a removed person is dropped from the board's live room.
 
+## AI
+
+Three routes under `/boards/:boardId/ai`: draft tasks from a goal, break a task into subtasks, and summarize a board. The model is Gemini through the AI SDK; `LLM_API_KEY` turns it on (without it the routes answer 503 "AI is not configured") and `LLM_MODEL` names the model, `gemini-flash-latest` by default. Answers are parsed against a schema before they leave the server, a call is limited to 30 seconds, and each route to 10 requests a minute. The provider's reason is logged; the person gets a general message, except for a quota. See decision 7.
+
 ## Realtime
 
 Socket.IO on the same port. A connection is authenticated with the session cookie, a person joins a board's room only if they are on the board, and services emit events (`task:created`, `board:updated` and so on) with the same payloads the REST routes answer. The API re-checks every connected socket's session every 30 seconds (`SESSION_RECHECK_MS`) and disconnects those that ended; a check that fails to run keeps the socket. Cursor events are throttled to about 30 a second per board.

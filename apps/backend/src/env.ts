@@ -13,6 +13,8 @@ export const envSchema = z.object({
   BETTER_AUTH_URL: z.url(),
   GOOGLE_CLIENT_ID: z.string().min(1).optional(),
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+  LLM_API_KEY: z.string().min(1).optional(),
+  LLM_MODEL: z.string().min(1).default("gemini-flash-latest"),
 });
 
 // The only place this app reads the environment.

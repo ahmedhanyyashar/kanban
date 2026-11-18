@@ -10,6 +10,7 @@ Short records of the choices that shaped the code: what was chosen, why, and wha
 4. [Review and quality gates from the first pull request](#4-review-and-quality-gates-from-the-first-pull-request)
 5. [The codebase is documented in the repository](#5-the-codebase-is-documented-in-the-repository)
 6. [The API contract is declared once and typed end to end](#6-the-api-contract-is-declared-once-and-typed-end-to-end)
+7. [AI output is a draft: validated, limited and previewed](#7-ai-output-is-a-draft-validated-limited-and-previewed)
 
 ## 1. Where it runs
 
@@ -46,3 +47,11 @@ Every response has a zod schema in `@repo/shared/contracts/board`, wrapped in th
 - **Why:** a route with no declared answer gives the client `unknown`, and a decimal that arrives as a string breaks arithmetic. One schema documents, types and (for requests) validates.
 - **Checks:** `test/contract.test.ts` fails when a route lacks a success body or a 401; CI regenerates the description and fails on a diff.
 - **Consequences:** a nullable text field needs a length limit, or the generator describes it as an array. `@repo/shared` must be built before the API runs or exports.
+
+## 7. AI output is a draft: validated, limited and previewed
+
+Every model call goes through `AiService`. Task suggestions are drafts: the web app shows them and the person adds what they want through the normal task routes, so what is saved is what was shown (the route can also save in one call when given a column). The answer is parsed against a schema with the exact count before it leaves the server. The person's text goes between tags and is called data, a call has a 30 second limit, and each route is limited to 10 requests a minute. Overdue marks are computed in code and written into the prompt, so the model does not judge dates. The provider's reason is logged and the person gets a general message, except for a quota, which is told as one.
+
+- **Why:** a model call is slow, paid and not deterministic; each rule keeps one failure from becoming the product's failure.
+- **Checks:** unit tests of the error mapping and the prompt with the provider stubbed; end-to-end tests of the routes with the model stubbed; the real provider by hand.
+- **Consequences:** quality depends on the model, there is no quota per person or cost cap, and the model name is an alias that is tried by hand before a release.

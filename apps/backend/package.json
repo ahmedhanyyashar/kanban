@@ -19,6 +19,7 @@
     "export:openapi": "node --env-file=.env.example dist/export-openapi"
   },
   "dependencies": {
+    "@ai-sdk/google": "catalog:",
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/platform-express": "catalog:",
@@ -29,6 +30,7 @@
     "@opentelemetry/instrumentation-http": "catalog:",
     "@opentelemetry/instrumentation-nestjs-core": "catalog:",
     "@opentelemetry/sdk-node": "catalog:",
+    "ai": "catalog:",
     "helmet": "catalog:",
     "nestjs-pino": "catalog:",
     "nestjs-zod": "catalog:",

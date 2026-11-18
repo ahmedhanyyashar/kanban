@@ -51,6 +51,7 @@ describe("the API description", () => {
         "DELETE /boards/{boardId}/members/{userId}",
         "POST /boards/{boardId}/columns",
         "PATCH /boards/{boardId}/tasks/{taskId}/move",
+        "POST /boards/{boardId}/ai/tasks/generate",
         "GET /users/search",
       ]),
     );
