@@ -11,6 +11,7 @@ catalog:
   "@commitlint/cli": ^21.2.4
   "@commitlint/config-conventional": ^21.2.4
   "@eslint/js": ~9.39.5
+  "@hookform/resolvers": ^7.0.3
   "@nestjs/cli": ^12.0.12
   "@nestjs/common": ^12.4.0
   "@nestjs/core": ^12.4.0
@@ -78,6 +79,7 @@ catalog:
   prisma: ^7.10.1
   react: ^19.3.1
   react-dom: ^19.3.1
+  react-hook-form: ^7.91.0
   react-router: ^8.5.1
   rxjs: ^7.8.2
   sonner: ^2.0.8
