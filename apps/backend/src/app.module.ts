@@ -12,6 +12,7 @@ import { RequestIdMiddleware } from "./lib/request-id/request-id.middleware";
 import { BoardModule } from "./modules/board/board.module.js";
 import { ColumnModule } from "./modules/column/column.module.js";
 import { HealthModule } from "./modules/health/health.module";
+import { TaskModule } from "./modules/task/task.module.js";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { HealthModule } from "./modules/health/health.module";
     RateLimitModule,
     BoardModule,
     ColumnModule,
+    TaskModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
