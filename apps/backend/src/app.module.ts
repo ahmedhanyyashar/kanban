@@ -10,6 +10,7 @@ import { LoggerModule } from "./lib/logger/logger.module";
 import { RateLimitModule } from "./lib/rate-limit/rate-limit.module";
 import { RequestIdMiddleware } from "./lib/request-id/request-id.middleware";
 import { BoardModule } from "./modules/board/board.module.js";
+import { ColumnModule } from "./modules/column/column.module.js";
 import { HealthModule } from "./modules/health/health.module";
 
 @Module({
@@ -20,6 +21,7 @@ import { HealthModule } from "./modules/health/health.module";
     SessionModule,
     RateLimitModule,
     BoardModule,
+    ColumnModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
