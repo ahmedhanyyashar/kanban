@@ -13,6 +13,7 @@ import { BoardModule } from "./modules/board/board.module.js";
 import { ColumnModule } from "./modules/column/column.module.js";
 import { HealthModule } from "./modules/health/health.module";
 import { TaskModule } from "./modules/task/task.module.js";
+import { UserModule } from "./modules/user/user.module.js";
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TaskModule } from "./modules/task/task.module.js";
     BoardModule,
     ColumnModule,
     TaskModule,
+    UserModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
