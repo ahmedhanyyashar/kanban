@@ -1,4 +1,5 @@
 import { Controller, Get, HttpStatus, Res } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AllowAnonymous } from "@thallesp/nestjs-better-auth";
 import type { Response } from "express";
 
@@ -11,18 +12,21 @@ interface HealthStatus {
 }
 
 @AllowAnonymous()
+@ApiTags("health")
 @Controller("health")
 export class HealthController {
   constructor(private readonly prismaService: PrismaService) {}
 
   /** Liveness probe: is the process alive? Never checks external dependencies. */
   @Get("live")
+  @ApiOperation({ summary: "Liveness probe" })
   live(): HealthStatus {
     return { status: "ok", uptime: process.uptime(), checks: {} };
   }
 
   /** Readiness probe: can the app serve traffic? Checks what the product depends on; answers 503 when it cannot. */
   @Get("ready")
+  @ApiOperation({ summary: "Readiness probe" })
   async ready(
     @Res({ passthrough: true }) res: Response,
   ): Promise<HealthStatus> {

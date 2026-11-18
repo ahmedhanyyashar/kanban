@@ -1,5 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import type { NestExpressApplication } from "@nestjs/platform-express";
+import { SwaggerModule } from "@nestjs/swagger";
 import helmet from "helmet";
 import { Logger } from "nestjs-pino";
 
@@ -8,6 +9,7 @@ import { env } from "./env";
 import { sdk } from "./instrumentation";
 import { REQUEST_ID_HEADER } from "./lib/request-id/request-id.middleware";
 import { setupGracefulShutdown } from "./lib/shutdown/graceful-shutdown";
+import { createDocument } from "./openapi";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -33,6 +35,9 @@ async function bootstrap() {
     allowedHeaders: ["Content-Type", "Authorization", REQUEST_ID_HEADER],
     exposedHeaders: [REQUEST_ID_HEADER],
   });
+
+  if (env.NODE_ENV !== "production")
+    SwaggerModule.setup("docs", app, createDocument(app));
 
   await app.listen(env.PORT);
   setupGracefulShutdown(app, sdk);
