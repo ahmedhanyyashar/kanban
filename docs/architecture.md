@@ -53,7 +53,7 @@ Start at `src/main.tsx` (mounts the app), `src/components/providers.tsx` (theme,
 | `apps/web/src/features/boards`    | Boards and the kanban board: `api` (calls), `hooks` (queries, mutations, realtime), `lib` (pure logic), `components` |
 | `apps/web/src/features/tasks`     | Tasks: the dialog and form, the mutations, due dates and priorities                                                  |
 | `apps/web/src/features/ai`        | The AI dialogs and their hooks: draft tasks from a goal, break a task down, summarize the board                      |
-| `apps/web/src/features/workspace` | Pieces shared by the workspace pages, such as the stat card                                                          |
+| `apps/web/src/features/workspace` | My tasks, Calendar and Team: reads every board and combines the results                                              |
 | `apps/web/src/features/landing`   | The public page: navbar, hero, features, how it works, the AI section and the footer                                 |
 | `apps/web/src/features/users`     | The avatar                                                                                                           |
 | `src/lib`                         | The API and auth clients (the session-ended handling is here) and the safe return address after sign-in              |

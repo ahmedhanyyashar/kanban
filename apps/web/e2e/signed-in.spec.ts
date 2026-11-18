@@ -6,14 +6,17 @@ import { expect, test } from "./fixtures";
 // Every page behind the sign-in, in both themes, and on a phone-sized screen. One account for
 // all of it: signing up is rate limited, and the pages only read what the account has.
 
-/** The page has drawn its heading and its data has arrived (a loading note is gone). */
+/** The page has drawn its heading and its data has arrived (every "Loading …" note is gone). */
 async function shown(page: Page) {
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page.getByRole("status")).toHaveCount(0);
+  await expect(page.getByText(/^Loading/)).toHaveCount(0);
 }
 
 const pages = [
   { name: "Dashboard", path: "/dashboard" },
+  { name: "My tasks", path: "/my-tasks" },
+  { name: "Calendar", path: "/calendar" },
+  { name: "Team", path: "/team" },
   { name: "Settings", path: "/settings" },
 ];
 
