@@ -28,7 +28,8 @@
     "react-hook-form": "catalog:",
     "@hookform/resolvers": "catalog:",
     "sonner": "catalog:",
-    "better-auth": "catalog:"
+    "better-auth": "catalog:",
+    "@repo/shared": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
