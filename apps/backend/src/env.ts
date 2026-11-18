@@ -8,6 +8,7 @@ export const envSchema = z.object({
   TRUST_PROXY: z.string().min(1).default("0"),
   TRUSTED_ORIGINS: z.string().min(1).default("http://localhost:3100"),
   OTEL_EXPORTER_OTLP_ENDPOINT: z.url().optional(),
+  DATABASE_URL: z.url(),
 });
 
 // The only place this app reads the environment.

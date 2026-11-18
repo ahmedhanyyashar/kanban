@@ -3,12 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "nest build",
-    "dev": "nest start --watch",
-    "start": "node dist/main",
-    "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "build": "prisma generate && nest build",
+    "dev": "prisma generate && nest start --watch",
+    "start": "node --env-file-if-exists=.env dist/main",
+    "lint": "prisma generate && eslint . --max-warnings 0",
+    "check-types": "prisma generate && tsc --noEmit",
+    "test": "prisma generate && vitest run --passWithNoTests",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset --force"
   },
   "dependencies": {
     "@nestjs/common": "catalog:",
@@ -26,6 +31,10 @@
     "pino-pretty": "catalog:",
     "rxjs": "catalog:",
     "zod": "catalog:",
+    "@prisma/client": "catalog:",
+    "pg": "catalog:",
+    "@prisma/adapter-pg": "catalog:",
+    "@prisma/instrumentation": "catalog:",
     "@nestjs/throttler": "catalog:"
   },
   "devDependencies": {
@@ -39,6 +48,9 @@
     "eslint": "catalog:",
     "supertest": "catalog:",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "prisma": "catalog:",
+    "dotenv": "catalog:",
+    "@types/pg": "catalog:"
   }
 }

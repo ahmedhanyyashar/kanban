@@ -13,6 +13,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # `prisma generate` reads this but never connects; the end-to-end jobs start their own database
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kanban
+
 jobs:
   # Text-only changes (Markdown and docs/) skip the slow jobs. A job skipped by its `if` counts as
   # passed for the required checks, while a workflow-level `paths-ignore` would leave them unreported

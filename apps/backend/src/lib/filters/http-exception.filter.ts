@@ -18,6 +18,40 @@ interface ApiErrorBody {
   issues?: { path: string; message: string }[];
 }
 
+// Prisma's known request errors, matched by code so this filter doesn't depend on the generated
+// client's error classes.
+const PRISMA_ERRORS: Record<
+  string,
+  { status: number; code: string; message: string }
+> = {
+  P2002: {
+    status: HttpStatus.CONFLICT,
+    code: "CONFLICT",
+    message: "A record with this value already exists",
+  },
+  P2003: {
+    status: HttpStatus.CONFLICT,
+    code: "CONFLICT",
+    message: "A related record constraint failed",
+  },
+  P2025: {
+    status: HttpStatus.NOT_FOUND,
+    code: "NOT_FOUND",
+    message: "Record not found",
+  },
+};
+
+function prismaError(exception: unknown) {
+  if (
+    typeof exception !== "object" ||
+    exception === null ||
+    !("code" in exception)
+  )
+    return undefined;
+  const code: unknown = exception.code;
+  return typeof code === "string" ? PRISMA_ERRORS[code] : undefined;
+}
+
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger("HttpExceptionFilter");
@@ -31,6 +65,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let code = "INTERNAL_SERVER_ERROR";
     let message: string | string[] = "An unexpected error occurred";
     let issues: ApiErrorBody["issues"];
+    const prisma = prismaError(exception);
 
     if (exception instanceof ZodValidationException) {
       status = HttpStatus.UNPROCESSABLE_ENTITY;
@@ -55,6 +90,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         (typeof body === "object" ? body.code : undefined) ??
         HttpStatus[status] ??
         "HTTP_ERROR";
+    } else if (prisma) {
+      ({ status, code, message } = prisma);
     }
 
     this.logger.error(

@@ -13,7 +13,10 @@
     "docs:check": "node scripts/check-docs.mjs",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:up": "docker compose up -d --wait database",
+    "db:deploy": "node --env-file=apps/backend/.env -e \"require('child_process').execSync('pnpm --filter backend run db:deploy',{stdio:'inherit'})\"",
+    "db:down": "docker compose down"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",

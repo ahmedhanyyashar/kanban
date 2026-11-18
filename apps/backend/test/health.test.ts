@@ -1,16 +1,20 @@
 import type { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
-import { afterAll, beforeAll, expect, it } from "vitest";
+import { afterAll, beforeAll, expect, it, vi } from "vitest";
 
 import { AppModule } from "@/app.module";
+import { PrismaService } from "@/lib/database/prisma.service";
 
 let app: INestApplication;
+const ping = vi.fn();
 
 beforeAll(async () => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [AppModule],
-  }).compile();
+  // a live service (the database) is replaced by a stub, so the test needs nothing running
+  const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
+    .overrideProvider(PrismaService)
+    .useValue({ ping })
+    .compile();
   app = moduleRef.createNestApplication();
   await app.init();
 });
@@ -23,6 +27,18 @@ it("answers the liveness probe in the response envelope", async () => {
   // every response passes through the envelope: { success, data }, never the raw return value
   expect(response.body.success).toBe(true);
   expect(response.body.data.status).toBe("ok");
+});
+
+it("is ready when the database answers, and says 503 when it does not", async () => {
+  ping.mockResolvedValueOnce(undefined);
+  const ready = await request(app.getHttpServer()).get("/health/ready");
+  expect(ready.status).toBe(200);
+  expect(ready.body.data.checks).toEqual({ prismaService: "ok" });
+
+  ping.mockRejectedValueOnce(new Error("connection refused"));
+  const down = await request(app.getHttpServer()).get("/health/ready");
+  expect(down.status).toBe(503);
+  expect(down.body.data.status).toBe("error");
 });
 
 it("sends a request id back, and keeps the one it was given", async () => {
