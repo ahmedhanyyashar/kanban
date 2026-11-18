@@ -25,6 +25,7 @@ catalog:
   "@prisma/client": ^7.10.1
   "@prisma/instrumentation": ^7.10.1
   "@tailwindcss/postcss": ^4.3.5
+  "@testcontainers/postgresql": ^12.2.1
   "@thallesp/nestjs-better-auth": ^2.8.0
   "@tsconfig/node-lts": ^24.0.1
   "@tsconfig/strictest": ^2.0.8
@@ -83,4 +84,6 @@ allowBuilds:
   esbuild: true
   prisma: true
   "@scarf/scarf": false
+  cpu-features: false
   protobufjs: false
+  ssh2: false

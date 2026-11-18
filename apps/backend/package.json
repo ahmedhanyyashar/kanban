@@ -9,6 +9,7 @@
     "lint": "prisma generate && eslint . --max-warnings 0",
     "check-types": "prisma generate && tsc --noEmit",
     "test": "prisma generate && vitest run --passWithNoTests",
+    "test:e2e": "prisma generate && vitest run --config vitest.config.e2e.mts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
@@ -58,6 +59,7 @@
     "prisma": "catalog:",
     "dotenv": "catalog:",
     "@types/pg": "catalog:",
+    "@testcontainers/postgresql": "catalog:",
     "tsx": "catalog:"
   }
 }

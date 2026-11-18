@@ -7,6 +7,13 @@
       "@test/*": ["./test/*"]
     }
   },
-  "include": ["src", "test", "scripts", "*.config.ts", "*.config.mts"],
+  "include": [
+    "src",
+    "test",
+    "scripts",
+    "*.config.ts",
+    "*.config.mts",
+    "*.config.e2e.mts"
+  ],
   "exclude": ["node_modules", "dist"]
 }
