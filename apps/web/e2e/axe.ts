@@ -32,3 +32,28 @@ export async function checkA11y(page: Page) {
 
   return violations;
 }
+
+/**
+ * Scrolls through the page and waits for every finite animation to end, so a scan never reads an element
+ * that is still fading in: the scroll starts the reveals, and contrast is computed from what is drawn.
+ */
+export async function settle(page: Page) {
+  await page.evaluate(async () => {
+    const step = Math.max(window.innerHeight / 2, 200);
+    for (let y = 0; y < document.body.scrollHeight; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((resolve) => setTimeout(resolve, 120));
+    }
+    window.scrollTo(0, 0);
+  });
+  // an animation that loops for ever (a drifting background) never ends and is not waited for
+  await page.waitForFunction(() =>
+    document
+      .getAnimations()
+      .every(
+        (animation) =>
+          animation.playState !== "running" ||
+          !Number.isFinite(animation.effect?.getComputedTiming().iterations),
+      ),
+  );
+}
