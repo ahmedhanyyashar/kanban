@@ -36,6 +36,10 @@ The schema is `prisma/schema.prisma`; the client is generated into `src/generate
 
 better-auth keeps accounts and sessions in the four auth tables (`prisma/migrations/0001_init`). Email and password work always; Google sign-in turns on when both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set. Every route needs a session unless it says `@AllowAnonymous()`. Sign-in and sign-up are limited to 5 requests a minute per address, in every environment. `pnpm auth:seed` creates an account per role (`<role>@example.com`); the password is `SEED_PASSWORD`, which outside production defaults to `password1234`.
 
+## Boards and access
+
+Every route under `/boards/:boardId` passes `BoardAccessGuard`: 400 for a malformed id, 404 for a board that does not exist, 403 for someone who is not on it. A person is `owner`, `admin` or `member` (`@repo/shared/board-role`); owners and admins manage members, and only the owner deletes the board. Adding and removing members is recorded in the activity feed, and a removed person is dropped from the board's live room.
+
 ## Realtime
 
 Socket.IO on the same port. A connection is authenticated with the session cookie, a person joins a board's room only if they are on the board, and services emit events (`task:created`, `board:updated` and so on) with the same payloads the REST routes answer. The API re-checks every connected socket's session every 30 seconds (`SESSION_RECHECK_MS`) and disconnects those that ended; a check that fails to run keeps the socket. Cursor events are throttled to about 30 a second per board.
