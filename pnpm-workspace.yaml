@@ -87,3 +87,9 @@ allowBuilds:
   cpu-features: false
   protobufjs: false
   ssh2: false
+
+auditConfig:
+  # picomatch ReDoS in glob matching, reached only through dev tooling (lint-staged, vite). The patched
+  # release (4.0.8) is not published yet: remove this entry when it is, and the audit passes without it.
+  ignoreGhsas:
+    - GHSA-fc5q-39xc-vjpf
