@@ -1,11 +1,15 @@
 # Documentation
 
-| Read this                                | When you want to know                                               |
-| ---------------------------------------- | ------------------------------------------------------------------- |
-| [architecture.md](architecture.md)       | What the pieces are and where to look (the map)                     |
-| [deploying.md](deploying.md)             | How it is put live, the variables it needs and how to roll back     |
-| [decisions.md](decisions.md)             | Why a larger choice was made, what it costs and what was not chosen |
-| [../CONTRIBUTING.md](../CONTRIBUTING.md) | The workflow, the commit rules and the repository settings          |
-| [../AGENTS.md](../AGENTS.md)             | The rules that are easy to break, for people and tools              |
+| Read this                                    | When you want to know                                                  |
+| -------------------------------------------- | ---------------------------------------------------------------------- |
+| [architecture.md](architecture.md)           | What the pieces are, how they connect and where to look (the map)      |
+| [deploying.md](deploying.md)                 | How it is put live, the variables it needs and how to roll back        |
+| [decisions.md](decisions.md)                 | Why a larger choice was made, what it costs and what was not chosen    |
+| [known-limitations.md](known-limitations.md) | What the project deliberately does not do yet                          |
+| [openapi.json](openapi.json)                 | The API's description, generated; the running API serves it at `/docs` |
+| [../CONTRIBUTING.md](../CONTRIBUTING.md)     | The workflow, the commit rules and the repository settings             |
+| [../AGENTS.md](../AGENTS.md)                 | The rules that are easy to break, for people and tools                 |
+
+Each app and package has its own README with its scripts and structure: [`apps/backend`](../apps/backend/README.md), [`apps/web`](../apps/web/README.md), [`packages/ui`](../packages/ui/README.md), [`packages/shared`](../packages/shared/README.md) and [`packages/api-client`](../packages/api-client/README.md).
 
 The documents are Markdown in the repository, so they change in the pull request that changes the code.

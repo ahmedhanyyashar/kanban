@@ -8,7 +8,7 @@ The design system: the theme, the components and the blocks the web app is built
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/globals.css` | The one theme file: colour tokens in `oklch` (light and dark), priority and brand colours, shadows, utilities, the reduced-motion rule |
 | `src/components`  | shadcn components on Base UI (button, dialog, field, sidebar and so on). Add one with the shadcn CLI; do not hand-write a look-alike   |
-| `src/blocks`      | Composed pieces used across features: page header, empty state, confirm dialog, skip link, mode toggle                                 |
+| `src/blocks`      | Composed pieces used across features: page header, empty state, confirm dialog, skip link, mode toggle, error boundary                 |
 | `src/hooks`       | Small shared hooks                                                                                                                     |
 | `src/lib`         | `cn` and formatting helpers                                                                                                            |
 
