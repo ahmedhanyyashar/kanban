@@ -12,7 +12,10 @@ async function shown(page: Page) {
   await expect(page.getByRole("status")).toHaveCount(0);
 }
 
-const pages = [{ name: "Settings", path: "/settings" }];
+const pages = [
+  { name: "Dashboard", path: "/dashboard" },
+  { name: "Settings", path: "/settings" },
+];
 
 test("every signed-in page is accessible in both themes and fits a phone", async ({
   page,

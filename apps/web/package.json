@@ -26,6 +26,7 @@
     "lucide-react": "catalog:",
     "next-themes": "catalog:",
     "@tanstack/react-query": "catalog:",
+    "nuqs": "catalog:",
     "@repo/api-client": "workspace:*",
     "react-router": "catalog:",
     "react-hook-form": "catalog:",

@@ -49,7 +49,7 @@ Start at `src/main.tsx` (mounts the app), `src/components/providers.tsx` (theme,
 | Path                              | What it holds                                                                                                        |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | `src/pages`                       | One file per route; they compose features and hold no data logic                                                     |
-| `src/layouts`                     | The signed-in shell: session guard, sidebar, user menu                                                               |
+| `src/layouts`                     | The signed-in shell: session guard, sidebar with the boards, user menu, command menu entry                           |
 | `apps/web/src/features/boards`    | Boards and the kanban board: `api` (calls), `hooks` (queries, mutations, realtime), `lib` (pure logic), `components` |
 | `apps/web/src/features/tasks`     | Tasks: the dialog and form, the mutations, due dates and priorities                                                  |
 | `apps/web/src/features/workspace` | Pieces shared by the workspace pages, such as the stat card                                                          |
