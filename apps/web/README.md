@@ -19,6 +19,8 @@ Declared and validated in `src/env.ts`; see `.env.example`. `VITE_API_URL` is wh
 ## Structure
 
 - `src/pages`: one file per route; they compose features.
+- `src/layouts`: the signed-in shell with the session guard.
+- `src/lib`: the API and auth clients, and the safe return address after sign-in.
 - `src/components`: the providers (theme, query cache, motion, toasts) and pieces used across pages.
 - `src/providers`, `src/hooks`, `src/lib`: the query client, shared hooks and helpers.
 
