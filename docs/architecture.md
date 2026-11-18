@@ -52,6 +52,7 @@ Start at `src/main.tsx` (mounts the app), `src/components/providers.tsx` (theme,
 | `src/layouts`                     | The signed-in shell: session guard, sidebar with the boards, user menu, command menu entry                           |
 | `apps/web/src/features/boards`    | Boards and the kanban board: `api` (calls), `hooks` (queries, mutations, realtime), `lib` (pure logic), `components` |
 | `apps/web/src/features/tasks`     | Tasks: the dialog and form, the mutations, due dates and priorities                                                  |
+| `apps/web/src/features/ai`        | The AI dialogs and their hooks: draft tasks from a goal, break a task down, summarize the board                      |
 | `apps/web/src/features/workspace` | Pieces shared by the workspace pages, such as the stat card                                                          |
 | `apps/web/src/features/landing`   | The public page: navbar, hero, features, how it works, the AI section and the footer                                 |
 | `apps/web/src/features/users`     | The avatar                                                                                                           |
