@@ -22,6 +22,7 @@ import { Input } from "@repo/ui/components/input";
 
 import { usePageTitle } from "@/hooks/use-page-title";
 import { authClient } from "@/lib/auth-client";
+import { APP_HOME } from "@/lib/routes";
 import { getSafeRedirect } from "@/lib/safe-redirect";
 
 const schema = z.object({
@@ -34,7 +35,7 @@ export function SignInPage() {
   usePageTitle("Sign in");
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const redirectTo = getSafeRedirect(params.get("redirect"), "/settings");
+  const redirectTo = getSafeRedirect(params.get("redirect"), APP_HOME);
   const { data: session } = authClient.useSession();
   const form = useForm<Schema>({
     resolver: zodResolver(schema),

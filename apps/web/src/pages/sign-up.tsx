@@ -22,6 +22,7 @@ import { Input } from "@repo/ui/components/input";
 
 import { usePageTitle } from "@/hooks/use-page-title";
 import { authClient } from "@/lib/auth-client";
+import { APP_HOME } from "@/lib/routes";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Please enter your name"),
@@ -40,7 +41,7 @@ export function SignUpPage() {
   });
 
   // someone who is already signed in has no use for this page
-  if (session) return <Navigate to="/settings" replace />;
+  if (session) return <Navigate to={APP_HOME} replace />;
 
   async function onSubmit(data: Schema) {
     const { error } = await authClient.signUp.email(data);
@@ -49,7 +50,7 @@ export function SignUpPage() {
       return;
     }
     toast.success("Account created");
-    void navigate("/settings", { replace: true });
+    void navigate(APP_HOME, { replace: true });
   }
 
   return (
