@@ -1,0 +1,65 @@
+name: Deploy
+
+# When CI passes on main, the commit that passed goes live: the web app on
+# Cloudflare Pages, the API on Render (Neon holds the database). It can also be
+# started by hand from main.
+#
+# It does nothing unless the repository variable DEPLOY_ENABLED is "true".
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: >-
+      vars.DEPLOY_ENABLED == 'true' &&
+      ((github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    env:
+      SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ env.SHA }}
+      - uses: ./.github/actions/setup
+
+      # The API first: the migration runs when its container starts, and the web
+      # app is built against the API's address.
+      - name: Deploy the API
+        run: curl --fail --silent --show-error -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}&ref=$SHA"
+
+      - name: Build the web app
+        run: pnpm build:libs && pnpm --filter web build
+        env:
+          VITE_API_URL: ${{ vars.API_URL }}
+
+      # the page's security policy lets the browser talk to this API and no other origin
+      - name: Set the API address in the web app's headers
+        run: |
+          sed -i "s#__API_ORIGIN__#${API_URL}#; s#__API_SOCKET_ORIGIN__#${API_URL/https:/wss:}#" apps/web/dist/_headers
+          ! grep -q __API_ apps/web/dist/_headers
+        env:
+          API_URL: ${{ vars.API_URL }}
+
+      - name: Deploy the web app
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/web/dist --project-name=${{ vars.CLOUDFLARE_PROJECT }} --branch=main --commit-hash=${{ env.SHA }}
+
+      - name: Check the live API
+        run: curl --fail --silent --show-error --retry 12 --retry-delay 10 --retry-all-errors "${{ vars.API_URL }}/health/ready"

@@ -1,0 +1,28 @@
+# The API on Render. The database is Neon: DATABASE_URL is set in the dashboard.
+services:
+  - type: web
+    name: kanban-api
+    runtime: docker
+    dockerfilePath: apps/backend/Dockerfile
+    dockerContext: .
+    region: frankfurt
+    plan: free
+    # deployed by the Deploy workflow once CI has passed, not on every push
+    autoDeployTrigger: "off"
+    healthCheckPath: /health/live
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DATABASE_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: BETTER_AUTH_URL
+        sync: false
+      - key: TRUSTED_ORIGINS
+        sync: false
+      # the shared domain (with a leading dot) when the web app and this API are subdomains of it
+      - key: COOKIE_DOMAIN
+        sync: false
