@@ -27,6 +27,12 @@ const taskInclude = {
   },
 } satisfies Prisma.TaskInclude;
 
+type GeneratedTask = {
+  title: string;
+  description: string;
+  priority: "low" | "medium" | "high" | "urgent";
+};
+
 @Injectable()
 export class TaskService {
   constructor(
@@ -90,6 +96,22 @@ export class TaskService {
       include: taskInclude,
       orderBy: { position: "asc" },
     });
+  }
+
+  async getTaskDetails(boardId: string, taskId: string) {
+    const task = await this.prisma.task.findFirst({
+      where: { id: taskId, boardId },
+      select: {
+        title: true,
+        description: true,
+      },
+    });
+
+    if (!task) {
+      throw new NotFoundException("Task not found");
+    }
+
+    return task;
   }
 
   async createTask(
@@ -268,5 +290,82 @@ export class TaskService {
     this.emit(boardId, "task:deleted", { id: taskId });
 
     return { success: true };
+  }
+
+  async createGeneratedTasks(
+    boardId: string,
+    columnId: string,
+    user: { id: string; name: string },
+    suggestions: GeneratedTask[],
+  ) {
+    const column = await this.prisma.column.findFirst({
+      where: { id: columnId, boardId },
+      select: { id: true },
+    });
+
+    if (!column) {
+      throw new BadRequestException("Column does not belong to this board");
+    }
+
+    const tasks = await this.prisma.$transaction(async (tx) => {
+      const lastTask = await tx.task.findFirst({
+        where: { columnId },
+        orderBy: { position: "desc" },
+        select: { position: true },
+      });
+
+      let position = lastTask?.position.toNumber() ?? 0;
+
+      const createdTasks = [];
+
+      for (const suggestion of suggestions) {
+        position += 1000;
+
+        const task = await tx.task.create({
+          data: {
+            boardId,
+            columnId,
+            title: suggestion.title,
+            description: suggestion.description,
+            priority: suggestion.priority,
+            position,
+            createdBy: user.id,
+          },
+          include: {
+            assignee: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+              },
+            },
+          },
+        });
+
+        createdTasks.push(task);
+      }
+
+      await tx.activity.create({
+        data: {
+          boardId,
+          userId: user.id,
+          action: "ai.generated_tasks",
+          message: `${user.name} generated ${createdTasks.length} tasks with AI`,
+          metadata: {
+            taskIds: createdTasks.map((task) => task.id),
+            count: createdTasks.length,
+          },
+        },
+      });
+
+      return createdTasks;
+    });
+
+    for (const task of tasks) {
+      this.boardGateway.emitToBoard(boardId, "task:created", task);
+    }
+
+    return tasks;
   }
 }

@@ -9,6 +9,7 @@ import { ResponseInterceptor } from "./lib/interceptors/response.interceptor";
 import { LoggerModule } from "./lib/logger/logger.module";
 import { RateLimitModule } from "./lib/rate-limit/rate-limit.module";
 import { RequestIdMiddleware } from "./lib/request-id/request-id.middleware";
+import { AiModule } from "./modules/ai/ai.module.js";
 import { BoardModule } from "./modules/board/board.module.js";
 import { ColumnModule } from "./modules/column/column.module.js";
 import { HealthModule } from "./modules/health/health.module";
@@ -25,6 +26,7 @@ import { UserModule } from "./modules/user/user.module.js";
     BoardModule,
     ColumnModule,
     TaskModule,
+    AiModule,
     UserModule,
   ],
   providers: [

@@ -198,6 +198,54 @@ export interface paths {
         patch: operations["TaskController_moveTask"];
         trace?: never;
     };
+    "/boards/{boardId}/ai/tasks/generate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AiController_generateTasks"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/boards/{boardId}/ai/tasks/breakdown": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AiController_breakdownTask"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/boards/{boardId}/ai/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AiController_summarizeBoard"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/search": {
         parameters: {
             query?: never;
@@ -501,6 +549,88 @@ export interface components {
             /** Format: uuid */
             columnId: string;
             position: number;
+        };
+        GenerateTasksDto: {
+            goal: string;
+            /** @default 6 */
+            count: number;
+            /** Format: uuid */
+            columnId?: string;
+        };
+        GenerateTasksResponseDto: {
+            /** @enum {boolean} */
+            success: true;
+            data: {
+                /** @enum {boolean} */
+                persisted: false;
+                tasks: {
+                    title: string;
+                    description: string;
+                    /** @enum {string} */
+                    priority: "low" | "medium" | "high" | "urgent";
+                }[];
+            } | {
+                /** @enum {boolean} */
+                persisted: true;
+                tasks: {
+                    id: string;
+                    title: string;
+                    description: string | null;
+                    position: number;
+                    /** @enum {string} */
+                    priority: "low" | "medium" | "high" | "urgent";
+                    /** Format: date-time */
+                    dueDate: string | null;
+                    assigneeId: string | null;
+                    assignee: {
+                        id: string;
+                        name: string;
+                        email: string;
+                        image: string | null;
+                    } | null;
+                    boardId: string;
+                    columnId: string;
+                    createdBy: string;
+                    /** Format: date-time */
+                    createdAt: string;
+                    /** Format: date-time */
+                    updatedAt: string;
+                }[];
+            };
+        };
+        BreakdownTaskDto: {
+            /** Format: uuid */
+            taskId?: string;
+            title?: string;
+            /** @default  */
+            description: string;
+            /** @default 5 */
+            count: number;
+        };
+        SubtasksResponseDto: {
+            /** @enum {boolean} */
+            success: true;
+            data: {
+                subtasks: {
+                    title: string;
+                    description: string;
+                    /** @enum {string} */
+                    priority: "low" | "medium" | "high" | "urgent";
+                }[];
+            };
+        };
+        SummaryResponseDto: {
+            /** @enum {boolean} */
+            success: true;
+            data: {
+                summary: {
+                    headline: string;
+                    completed: string[];
+                    inProgress: string[];
+                    risks: string[];
+                    recommendations: string[];
+                };
+            };
         };
         UserSearchResponseDto: {
             /** @enum {boolean} */
@@ -1474,6 +1604,185 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TaskResponseDto"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not allowed on this board */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AiController_generateTasks: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                boardId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GenerateTasksDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenerateTasksResponseDto"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not allowed on this board */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AiController_breakdownTask: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                boardId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BreakdownTaskDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubtasksResponseDto"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not allowed on this board */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AiController_summarizeBoard: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                boardId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SummaryResponseDto"];
                 };
             };
             /** @description Invalid input */
