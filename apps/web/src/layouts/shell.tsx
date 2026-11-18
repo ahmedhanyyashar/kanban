@@ -1,5 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Home, Plus, Search, Settings, type LucideIcon } from "lucide-react";
+import {
+  CalendarDays,
+  CheckSquare,
+  Home,
+  Plus,
+  Search,
+  Settings,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Navigate,
@@ -49,6 +58,9 @@ type NavItem = {
 
 const nav: NavItem[] = [
   { title: "Home", url: "/dashboard", icon: Home },
+  { title: "My tasks", url: "/my-tasks", icon: CheckSquare },
+  { title: "Calendar", url: "/calendar", icon: CalendarDays },
+  { title: "Team", url: "/team", icon: Users },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 

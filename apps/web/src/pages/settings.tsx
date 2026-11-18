@@ -1,4 +1,4 @@
-import { LogOut } from "lucide-react";
+import { CheckSquare, FolderKanban, LogOut, Users } from "lucide-react";
 
 import { PageHeader } from "@repo/ui/blocks/page-header";
 import { Button } from "@repo/ui/components/button";
@@ -11,6 +11,8 @@ import {
 } from "@repo/ui/components/card";
 
 import { UserAvatar } from "@/features/users/components/user-avatar";
+import { StatCard } from "@/features/workspace/components/stat-card";
+import { useWorkspace } from "@/features/workspace/hooks/use-workspace";
 import { usePageTitle } from "@/hooks/use-page-title";
 import { useSignOut } from "@/hooks/use-sign-out";
 import { authClient } from "@/lib/auth-client";
@@ -18,6 +20,7 @@ import { authClient } from "@/lib/auth-client";
 export function SettingsPage() {
   usePageTitle("Settings");
   const { data: session } = authClient.useSession();
+  const { boards, tasks, members } = useWorkspace();
   const signOut = useSignOut();
   const user = session?.user;
 
@@ -50,6 +53,29 @@ export function SettingsPage() {
             )}
           </CardContent>
         </Card>
+
+        <section aria-labelledby="workspace-heading">
+          <h2
+            id="workspace-heading"
+            className="mb-3 text-sm font-semibold tracking-tight"
+          >
+            Workspace
+          </h2>
+          <div className="grid gap-5 sm:grid-cols-3">
+            <StatCard
+              icon={FolderKanban}
+              label="Boards"
+              value={boards.length}
+            />
+            <StatCard
+              icon={CheckSquare}
+              label="Tasks"
+              value={tasks.length}
+              tone="info"
+            />
+            <StatCard icon={Users} label="People" value={members.length} />
+          </div>
+        </section>
 
         <Card>
           <CardHeader>
