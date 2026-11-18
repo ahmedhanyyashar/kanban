@@ -1,6 +1,6 @@
 # backend
 
-NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Zod-validated config (`src/env.ts`), rate limiting and a health probe.
+NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Zod-validated config (`src/env.ts`), rate limiting, health probes and PostgreSQL through Prisma 7.
 
 ## Scripts
 
@@ -27,6 +27,10 @@ Declared and validated in `src/env.ts`; the app exits at startup with a clear er
 
 Every response is `{ success: true, data }`, or `{ success: false, error: { code, message, timestamp, path } }`. Every response carries an `x-request-id` header: the one the caller sent, or a new one.
 
+## Database
+
+The schema is `prisma/schema.prisma`; the client is generated into `src/generated` (not committed) by `build`, `dev`, `lint`, `check-types` and `test`. Prisma 7 needs a driver adapter, which `PrismaService` provides. The only input is `DATABASE_URL`, a connection string for any PostgreSQL: the one in `compose.yaml` locally, a hosted one in production.
+
 ## Health
 
-`GET /health/live`.
+`GET /health/live` answers while the process is up. `GET /health/ready` also asks the database and answers 503 when it does not reply, so a platform can hold traffic back.

@@ -18,6 +18,7 @@ export default defineConfig({
       PORT: "3001",
       TRUST_PROXY: "0",
       TRUSTED_ORIGINS: "http://localhost:3100",
+      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/kanban",
     },
   },
 });

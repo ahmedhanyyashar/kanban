@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { ZodValidationPipe } from "nestjs-zod";
 
+import { DatabaseModule } from "./lib/database/database.module";
 import { HttpExceptionFilter } from "./lib/filters/http-exception.filter";
 import { ResponseInterceptor } from "./lib/interceptors/response.interceptor";
 import { LoggerModule } from "./lib/logger/logger.module";
@@ -10,7 +11,7 @@ import { RequestIdMiddleware } from "./lib/request-id/request-id.middleware";
 import { HealthModule } from "./modules/health/health.module";
 
 @Module({
-  imports: [LoggerModule, HealthModule, RateLimitModule],
+  imports: [LoggerModule, HealthModule, DatabaseModule, RateLimitModule],
   providers: [
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
     { provide: APP_PIPE, useClass: ZodValidationPipe },
