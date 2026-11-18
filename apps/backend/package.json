@@ -36,6 +36,7 @@
     "nestjs-zod": "catalog:",
     "pino-http": "catalog:",
     "pino-pretty": "catalog:",
+    "reflect-metadata": "catalog:",
     "rxjs": "catalog:",
     "zod": "catalog:",
     "@repo/shared": "workspace:*",
