@@ -1,4 +1,4 @@
-import { Activity, Users } from "lucide-react";
+import { Activity, FileText, Users } from "lucide-react";
 
 import { Button } from "@repo/ui/components/button";
 
@@ -7,6 +7,7 @@ import { UserAvatar } from "@/features/users/components/user-avatar";
 type BoardActionsProps = {
   /** Other people looking at the board right now. */
   others: { id: string; name: string }[];
+  onSummary: () => void;
   onMembers: () => void;
   onActivity: () => void;
 };
@@ -14,6 +15,7 @@ type BoardActionsProps = {
 /** What can be done with the board as a whole, and who else is here. */
 export function BoardActions({
   others,
+  onSummary,
   onMembers,
   onActivity,
 }: BoardActionsProps) {
@@ -31,6 +33,9 @@ export function BoardActions({
           ))}
         </ul>
       )}
+      <Button variant="outline" onClick={onSummary}>
+        <FileText /> Summary
+      </Button>
       <Button variant="outline" onClick={onMembers}>
         <Users /> Members
       </Button>

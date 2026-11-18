@@ -37,6 +37,7 @@ function renderDialog(overrides: { task?: typeof task | null } = {}) {
     onOpenChange: vi.fn(),
     onSubmit: vi.fn().mockResolvedValue(undefined),
     onDelete: vi.fn(),
+    onBreakdown: vi.fn(),
   };
   render(
     <TaskDialog
@@ -45,6 +46,7 @@ function renderDialog(overrides: { task?: typeof task | null } = {}) {
       defaultColumnId="c1"
       columns={columns}
       members={members}
+      breakingDown={false}
       {...props}
     />,
   );
@@ -93,13 +95,14 @@ describe("TaskDialog", () => {
     expect(screen.getByLabelText("Title")).toHaveProperty("value", "Ship it");
   });
 
-  it("offers delete only when editing", () => {
+  it("offers delete and breakdown only when editing", () => {
     renderDialog();
     expect(screen.queryByRole("button", { name: /Delete/ })).toBeNull();
     cleanup();
 
     renderDialog({ task });
     expect(screen.getByRole("button", { name: /Delete/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /AI breakdown/ })).toBeTruthy();
     expect(screen.getByLabelText("Title")).toHaveProperty(
       "value",
       "Write docs",

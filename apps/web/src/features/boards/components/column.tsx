@@ -26,6 +26,7 @@ type ColumnProps = {
   onAddTask: (columnId: string) => void;
   onRename: (columnId: string, title: string) => void;
   onDelete: (columnId: string) => void;
+  onAiGenerate: (columnId: string) => void;
 };
 
 export function Column({
@@ -36,6 +37,7 @@ export function Column({
   onAddTask,
   onRename,
   onDelete,
+  onAiGenerate,
 }: ColumnProps) {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
   const accent = columnAccent(index);
@@ -75,6 +77,7 @@ export function Column({
           <ColumnMenu
             title={column.title}
             taskCount={taskIds.length}
+            onAiGenerate={() => onAiGenerate(column.id)}
             onRename={() => setEditing(true)}
             onDelete={() => onDelete(column.id)}
           />

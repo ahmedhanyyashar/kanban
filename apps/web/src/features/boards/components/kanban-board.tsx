@@ -38,6 +38,7 @@ type KanbanBoardProps = {
   onTaskClick: (task: BoardTask) => void;
   onMoveTask: (taskId: string, columnId: string, position: number) => void;
   onAddTask: (columnId: string) => void;
+  onAiGenerate: (columnId: string) => void;
   onAddColumn: () => void;
   onRenameColumn: (columnId: string, title: string) => void;
   onDeleteColumn: (columnId: string) => void;
@@ -49,6 +50,7 @@ export function KanbanBoard({
   onTaskClick,
   onMoveTask,
   onAddTask,
+  onAiGenerate,
   onAddColumn,
   onRenameColumn,
   onDeleteColumn,
@@ -121,6 +123,7 @@ export function KanbanBoard({
               index={index}
               taskIds={columnTasks.map((t) => t.id)}
               onAddTask={onAddTask}
+              onAiGenerate={onAiGenerate}
               onRename={onRenameColumn}
               onDelete={onDeleteColumn}
             >

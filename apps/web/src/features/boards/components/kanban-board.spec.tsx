@@ -33,6 +33,7 @@ function renderBoard(onTaskClick = vi.fn()) {
       onTaskClick={onTaskClick}
       onMoveTask={noop}
       onAddTask={noop}
+      onAiGenerate={noop}
       onAddColumn={noop}
       onRenameColumn={noop}
       onDeleteColumn={noop}

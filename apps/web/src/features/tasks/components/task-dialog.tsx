@@ -22,6 +22,8 @@ type TaskDialogProps = {
   /** Create or update, as the caller decides. Rejecting keeps the dialog open. */
   onSubmit: (input: TaskInput) => Promise<void>;
   onDelete: (taskId: string) => void;
+  onBreakdown: (taskId: string) => void;
+  breakingDown: boolean;
 };
 
 export function TaskDialog({
@@ -33,6 +35,8 @@ export function TaskDialog({
   members,
   onSubmit,
   onDelete,
+  onBreakdown,
+  breakingDown,
 }: TaskDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -61,6 +65,10 @@ export function TaskDialog({
             onDelete(task.id);
             onOpenChange(false);
           }}
+          onBreakdown={() => {
+            if (task) onBreakdown(task.id);
+          }}
+          breakingDown={breakingDown}
         />
       </DialogContent>
     </Dialog>
