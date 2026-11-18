@@ -42,7 +42,9 @@
     "@prisma/instrumentation": "catalog:",
     "better-auth": "catalog:",
     "@thallesp/nestjs-better-auth": "catalog:",
-    "@nestjs/throttler": "catalog:"
+    "@nestjs/throttler": "catalog:",
+    "prisma": "catalog:",
+    "dotenv": "catalog:"
   },
   "devDependencies": {
     "@nestjs/cli": "catalog:",
@@ -56,10 +58,13 @@
     "supertest": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:",
-    "prisma": "catalog:",
-    "dotenv": "catalog:",
     "@types/pg": "catalog:",
     "@testcontainers/postgresql": "catalog:",
     "tsx": "catalog:"
-  }
+  },
+  "files": [
+    "dist",
+    "prisma",
+    "prisma.config.ts"
+  ]
 }

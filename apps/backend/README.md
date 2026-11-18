@@ -36,6 +36,10 @@ The schema is `prisma/schema.prisma`; the client is generated into `src/generate
 
 better-auth keeps accounts and sessions in the four auth tables (`prisma/migrations/0001_init`). Email and password work always; Google sign-in turns on when both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set. Every route needs a session unless it says `@AllowAnonymous()`. Sign-in and sign-up are limited to 5 requests a minute per address, in every environment. `pnpm auth:seed` creates an account per role (`<role>@example.com`); the password is `SEED_PASSWORD`, which outside production defaults to `password1234`.
 
+## Container
+
+`docker build -f apps/backend/Dockerfile .` from the repository root builds the image. It runs as a non-root user, serves no `/docs`, and applies the committed migrations before it starts. The security workflow scans it for known vulnerabilities on every pull request.
+
 ## Health
 
 `GET /health/live` answers while the process is up. `GET /health/ready` also asks the database and answers 503 when it does not reply, so a platform can hold traffic back.

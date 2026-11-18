@@ -31,6 +31,7 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | `prisma`                                                 | `schema.prisma`; the migrations are committed beside it                                                   |
 | `src/lib/filters`, `interceptors`                        | The error shape and the `{ success, data }` envelope, applied to every route                              |
 | `src/lib/logger`, `request-id`, `rate-limit`, `shutdown` | Logging, request ids, the default rate limit, graceful shutdown                                           |
+| `Dockerfile`                                             | The production image of the API (Node 24, non-root); it applies the migrations when it starts             |
 | `src/instrumentation.ts`                                 | OpenTelemetry tracing, started only when an endpoint is configured                                        |
 | `scripts/seed.ts`                                        | An account for each role                                                                                  |
 | `test`                                                   | Tests that boot the app                                                                                   |
