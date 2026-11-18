@@ -9,6 +9,7 @@ Short records of the choices that shaped the code: what was chosen, why, and wha
 3. [Browsers and screens under test](#3-browsers-and-screens-under-test)
 4. [Review and quality gates from the first pull request](#4-review-and-quality-gates-from-the-first-pull-request)
 5. [The codebase is documented in the repository](#5-the-codebase-is-documented-in-the-repository)
+6. [The API contract is declared once and typed end to end](#6-the-api-contract-is-declared-once-and-typed-end-to-end)
 
 ## 1. Where it runs
 
@@ -37,3 +38,11 @@ A map ([architecture.md](architecture.md), with diagrams and a codemap), the dec
 - **Why:** documentation in the repository is reviewed with the code, renders on GitHub and cannot be left behind by a separate system; a check keeps the one list that rots fastest, the map, complete.
 - **Alternatives:** a documentation site generator (a build, a host and a second place to update); a wiki (it drifts); generated reference for the apps (the OpenAPI document already describes the API, and the apps have no public code API).
 - **Consequences:** a site can be built later from the same files. Prose in the map is checked by people, not by the script.
+
+## 6. The API contract is declared once and typed end to end
+
+Every response has a zod schema in `@repo/shared/contracts/board`, wrapped in the success envelope and attached to its route; the exported OpenAPI description and the generated client come from them. Dates are ISO strings, a due date is a calendar day at UTC midnight (`YYYY-MM-DD` in requests), and positions are numbers: the response interceptor turns database decimals into numbers. Board roles and `canManageMembers` live in `@repo/shared/board-role`, used by the API and the web app.
+
+- **Why:** a route with no declared answer gives the client `unknown`, and a decimal that arrives as a string breaks arithmetic. One schema documents, types and (for requests) validates.
+- **Checks:** `test/contract.test.ts` fails when a route lacks a success body or a 401; CI regenerates the description and fails on a diff.
+- **Consequences:** a nullable text field needs a length limit, or the generator describes it as an array. `@repo/shared` must be built before the API runs or exports.
