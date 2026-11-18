@@ -22,6 +22,7 @@
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/platform-express": "catalog:",
+    "@nestjs/platform-socket.io": "catalog:",
     "@nestjs/swagger": "catalog:",
     "@opentelemetry/exporter-trace-otlp-http": "catalog:",
     "@opentelemetry/instrumentation-express": "catalog:",
@@ -43,6 +44,8 @@
     "better-auth": "catalog:",
     "@thallesp/nestjs-better-auth": "catalog:",
     "@nestjs/throttler": "catalog:",
+    "@nestjs/websockets": "catalog:",
+    "socket.io": "catalog:",
     "prisma": "catalog:",
     "dotenv": "catalog:"
   },
@@ -58,6 +61,7 @@
     "supertest": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:",
+    "vitest-mock-extended": "catalog:",
     "@types/pg": "catalog:",
     "@testcontainers/postgresql": "catalog:",
     "tsx": "catalog:"

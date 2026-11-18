@@ -24,6 +24,7 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | Path                                                     | What it holds                                                                                             |
 | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | `src/env.ts`                                             | The validated environment; the only place that reads `process.env`                                        |
+| `apps/backend/src/modules/board`                         | The realtime gateway (`board.gateway.ts`): rooms per board, presence and the events the services emit     |
 | `apps/backend/src/modules/health`                        | Liveness and readiness (readiness asks the database)                                                      |
 | `src/lib/auth`                                           | The sign-in setup (email and password, optional Google) and its rate limits                               |
 | `src/openapi.ts`, `export-openapi.ts`                    | The OpenAPI document: served at `/docs` outside production, written to `docs/openapi.json` for the client |

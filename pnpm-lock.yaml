@@ -30,6 +30,9 @@ catalogs:
     '@nestjs/platform-express':
       specifier: ^12.4.0
       version: 12.4.0
+    '@nestjs/platform-socket.io':
+      specifier: ^12.5.0
+      version: 12.5.0
     '@nestjs/swagger':
       specifier: ^12.1.1
       version: 12.1.1
@@ -39,6 +42,9 @@ catalogs:
     '@nestjs/throttler':
       specifier: ^6.7.1
       version: 6.7.1
+    '@nestjs/websockets':
+      specifier: ^12.5.0
+      version: 12.5.0
     '@opentelemetry/exporter-trace-otlp-http':
       specifier: ^0.301.0
       version: 0.301.0
@@ -189,6 +195,9 @@ catalogs:
     rxjs:
       specifier: ^7.8.2
       version: 7.8.2
+    socket.io:
+      specifier: ^4.8.4
+      version: 4.8.4
     sonner:
       specifier: ^2.0.8
       version: 2.0.8
@@ -216,6 +225,9 @@ catalogs:
     vitest:
       specifier: ^5.1.0
       version: 5.1.0
+    vitest-mock-extended:
+      specifier: ^5.1.1
+      version: 5.1.1
     zod:
       specifier: ^4.6.7
       version: 4.6.7
@@ -263,12 +275,18 @@ importers:
       '@nestjs/platform-express':
         specifier: 'catalog:'
         version: 12.4.0(@nestjs/common@12.4.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@10.2.2))(@nestjs/core@12.4.0)(rxjs@7.8.2)(supports-color@10.2.2)
+      '@nestjs/platform-socket.io':
+        specifier: 'catalog:'
+        version: 12.5.0(@nestjs/common@12.4.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@10.2.2))(@nestjs/websockets@12.5.0)(rxjs@7.8.2)
       '@nestjs/swagger':
         specifier: 'catalog:'
         version: 12.1.1(@nestjs/common@12.4.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@10.2.2))(@nestjs/core@12.4.0)(reflect-metadata@0.2.2)(typescript@6.0.3)
       '@nestjs/throttler':
         specifier: 'catalog:'
         version: 6.7.1(@nestjs/common@12.4.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@10.2.2))(@nestjs/core@12.4.0)(reflect-metadata@0.2.2)
+      '@nestjs/websockets':
+        specifier: 'catalog:'
+        version: 12.5.0(@nestjs/common@12.4.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@10.2.2))(@nestjs/core@12.4.0)(@nestjs/platform-socket.io@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: 'catalog:'
         version: 0.301.0(@opentelemetry/api@1.10.0)
@@ -329,6 +347,9 @@ importers:
       rxjs:
         specifier: 'catalog:'
         version: 7.8.2
+      socket.io:
+        specifier: 'catalog:'
+        version: 4.8.4
       zod:
         specifier: 'catalog:'
         version: 4.6.7
@@ -375,6 +396,9 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 5.1.0(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(jsdom@31.0.0(@noble/hashes@2.4.0))(vite@8.3.6(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+      vitest-mock-extended:
+        specifier: 'catalog:'
+        version: 5.1.1(typescript@6.0.3)(vitest@5.1.0(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(jsdom@31.0.0(@noble/hashes@2.4.0))(vite@8.3.6(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)))
 
   packages/api-client:
     dependencies:
@@ -5364,6 +5388,14 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
+  ts-essentials@10.2.1:
+    resolution: {integrity: sha512-+Id1fRkuir+CsgK2x04/icS2b4V1hQmq7ObzIrDjhN0ozfRYivnP7aaKMVJfLApQm0trjR39A6NIMVchiB9Erw==}
+    peerDependencies:
+      typescript: '>=4.5.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
@@ -5567,6 +5599,12 @@ packages:
         optional: true
       yaml:
         optional: true
+
+  vitest-mock-extended@5.1.1:
+    resolution: {integrity: sha512-k5Ji2+t4+nsdepXeakCkilyKydtgaULtP0HsjwQGIZsYr5hDTqrwCtC0+Sh0YBKUS7cY/Wxplf7SVjcZstTIMQ==}
+    peerDependencies:
+      typescript: 3.x || 4.x || 5.x || 6.x || 7.x
+      vitest: '>=4.0.0'
 
   vitest@5.1.0:
     resolution: {integrity: sha512-MzmNFnrwa8v8lF1bLxw3UJ4EREwVOVb75VqJZmUDRjJ6EluK/x9th7qTbaeDk41WxE1GxWqmTXcdsfobfH5sOA==}
@@ -6535,7 +6573,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   '@nestjs/schematics@12.0.13(chokidar@5.0.0)(prettier@3.9.10)(typescript@6.0.3)':
     dependencies:
@@ -6590,7 +6627,6 @@ snapshots:
       tslib: 2.9.1
     optionalDependencies:
       '@nestjs/platform-socket.io': 12.5.0(@nestjs/common@12.4.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@10.2.2))(@nestjs/websockets@12.5.0)(rxjs@7.8.2)
-    optional: true
 
   '@noble/ciphers@2.4.0': {}
 
@@ -7249,8 +7285,7 @@ snapshots:
 
   '@sindresorhus/is@4.6.0': {}
 
-  '@socket.io/component-emitter@3.1.2':
-    optional: true
+  '@socket.io/component-emitter@3.1.2': {}
 
   '@standard-schema/spec@1.1.0': {}
 
@@ -7394,7 +7429,6 @@ snapshots:
   '@types/cors@2.8.19':
     dependencies:
       '@types/node': 26.6.6
-    optional: true
 
   '@types/d3-array@3.0.3': {}
 
@@ -7533,7 +7567,6 @@ snapshots:
   '@types/ws@8.18.2':
     dependencies:
       '@types/node': 26.6.6
-    optional: true
 
   '@typescript-eslint/eslint-plugin@8.72.1(@typescript-eslint/parser@8.72.1(eslint@9.39.5(jiti@2.7.0))(supports-color@10.2.2)(typescript@6.0.3))(eslint@9.39.5(jiti@2.7.0))(supports-color@10.2.2)(typescript@6.0.3)':
     dependencies:
@@ -7785,7 +7818,6 @@ snapshots:
     dependencies:
       mime-types: 2.1.35
       negotiator: 0.6.3
-    optional: true
 
   accepts@2.0.0:
     dependencies:
@@ -8542,8 +8574,7 @@ snapshots:
     dependencies:
       once: 1.4.0
 
-  engine.io-parser@5.2.3:
-    optional: true
+  engine.io-parser@5.2.3: {}
 
   engine.io@6.6.11:
     dependencies:
@@ -8560,7 +8591,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   enhanced-resolve@5.26.1:
     dependencies:
@@ -9802,8 +9832,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  negotiator@0.6.3:
-    optional: true
+  negotiator@0.6.3: {}
 
   negotiator@1.1.0:
     dependencies:
@@ -9851,8 +9880,7 @@ snapshots:
 
   object-assign@4.1.1: {}
 
-  object-hash@3.0.0:
-    optional: true
+  object-hash@3.0.0: {}
 
   object-inspect@1.13.4: {}
 
@@ -10532,7 +10560,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   socket.io-parser@4.2.7:
     dependencies:
@@ -10540,7 +10567,6 @@ snapshots:
       debug: 4.4.3(supports-color@10.2.2)
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   socket.io@4.8.4:
     dependencies:
@@ -10554,7 +10580,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   sonic-boom@4.2.1:
     dependencies:
@@ -10879,6 +10904,10 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
+  ts-essentials@10.2.1(typescript@6.0.3):
+    optionalDependencies:
+      typescript: 6.0.3
+
   tsconfig-paths@3.15.0:
     dependencies:
       '@types/json5': 0.0.29
@@ -11082,6 +11111,12 @@ snapshots:
       tsx: 4.23.15
       yaml: 2.9.1
 
+  vitest-mock-extended@5.1.1(typescript@6.0.3)(vitest@5.1.0(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(jsdom@31.0.0(@noble/hashes@2.4.0))(vite@8.3.6(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))):
+    dependencies:
+      ts-essentials: 10.2.1(typescript@6.0.3)
+      typescript: 6.0.3
+      vitest: 5.1.0(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(jsdom@31.0.0(@noble/hashes@2.4.0))(vite@8.3.6(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+
   vitest@5.1.0(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(jsdom@31.0.0(@noble/hashes@2.4.0))(vite@8.3.6(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
@@ -11194,8 +11229,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.21.3:
-    optional: true
+  ws@8.21.3: {}
 
   xml-name-validator@5.0.0:
     optional: true
