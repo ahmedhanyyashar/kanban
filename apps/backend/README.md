@@ -16,7 +16,7 @@ NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Swagg
 
 ## Environment
 
-Declared and validated in `src/env.ts`; the app exits at startup with a clear error if a required variable is missing. See `.env.example`, which a test keeps in step with the schema. `OTEL_EXPORTER_OTLP_ENDPOINT` is where traces are sent; unset disables export.
+Declared and validated in `src/env.ts`; the app exits at startup with a clear error if a required variable is missing. See `.env.example`, which a test keeps in step with the schema. A `.env` file next to `package.json` (copy the example) is read at start when it exists and never overrides what the environment already sets; a deployed process gets its values from the platform. `OTEL_EXPORTER_OTLP_ENDPOINT` is where traces are sent; unset disables export.
 
 ## Structure
 
