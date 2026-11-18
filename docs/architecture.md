@@ -26,6 +26,7 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | `src/env.ts`                                             | The validated environment; the only place that reads `process.env`                                        |
 | `apps/backend/src/modules/board`                         | The realtime gateway (`board.gateway.ts`): rooms per board, presence and the events the services emit     |
 | `apps/backend/src/modules/column`                        | Columns of a board; a column with tasks cannot be deleted                                                 |
+| `apps/backend/src/modules/task`                          | Tasks, including moving one, and the checks that the column and the assignee are on the board             |
 | `apps/backend/src/modules/health`                        | Liveness and readiness (readiness asks the database)                                                      |
 | `src/lib/auth`                                           | The sign-in setup (email and password, optional Google) and its rate limits                               |
 | `src/openapi.ts`, `export-openapi.ts`                    | The OpenAPI document: served at `/docs` outside production, written to `docs/openapi.json` for the client |
