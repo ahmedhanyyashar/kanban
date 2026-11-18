@@ -1,10 +1,18 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Settings, type LucideIcon } from "lucide-react";
-import { useEffect } from "react";
-import { Navigate, NavLink, Outlet, useLocation } from "react-router";
+import { Home, Plus, Search, Settings, type LucideIcon } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Navigate,
+  NavLink,
+  Outlet,
+  useLocation,
+  useMatch,
+  useNavigate,
+} from "react-router";
 
 import { ModeToggle } from "@repo/ui/blocks/mode-toggle";
 import { SkipLink } from "@repo/ui/blocks/skip-link";
+import { Button } from "@repo/ui/components/button";
 import { Separator } from "@repo/ui/components/separator";
 import {
   Sidebar,
@@ -21,10 +29,16 @@ import {
   SidebarTrigger,
 } from "@repo/ui/components/sidebar";
 
+import { CommandMenu } from "@/components/command-menu";
+import { CreateBoardDialog } from "@/features/boards/components/create-board-dialog";
+import { useBoards, useCreateBoard } from "@/features/boards/hooks/use-boards";
+import { useCommandShortcut } from "@/hooks/use-command-shortcut";
 import { useSignOut } from "@/hooks/use-sign-out";
 import { authClient } from "@/lib/auth-client";
 import { APP_HOME } from "@/lib/routes";
 
+import type { ShellActions } from "./shell-context";
+import { SidebarBoards } from "./sidebar-boards";
 import { UserMenu } from "./user-menu";
 
 type NavItem = {
@@ -34,6 +48,7 @@ type NavItem = {
 };
 
 const nav: NavItem[] = [
+  { title: "Home", url: "/dashboard", icon: Home },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
@@ -72,7 +87,20 @@ type ShellProps = {
 
 function Shell({ user, items }: ShellProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const signOut = useSignOut();
+  const boards = useBoards();
+  const createBoard = useCreateBoard();
+  const [createOpen, setCreateOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const activeBoardId = useMatch("/board/:boardId")?.params.boardId;
+
+  const actions = useMemo<ShellActions>(
+    () => ({ openCreateBoard: () => setCreateOpen(true) }),
+    [],
+  );
+
+  useCommandShortcut(useCallback(() => setCommandOpen((open) => !open), []));
 
   return (
     <SidebarProvider>
@@ -82,6 +110,7 @@ function Shell({ user, items }: ShellProps) {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton render={<NavLink to={APP_HOME} />}>
+                <Home />
                 <span className="text-base font-semibold">Flowboard</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -106,6 +135,11 @@ function Shell({ user, items }: ShellProps) {
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
+          <SidebarBoards
+            boards={boards.data}
+            activeBoardId={activeBoardId}
+            onCreateBoard={() => setCreateOpen(true)}
+          />
         </SidebarContent>
         <SidebarFooter>
           <UserMenu user={user} onSignOut={signOut} />
@@ -117,13 +151,45 @@ function Shell({ user, items }: ShellProps) {
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mx-2 h-4" />
           <div className="ml-auto flex items-center gap-2">
+            <Button variant="outline" onClick={() => setCommandOpen(true)}>
+              <Search />
+              <span className="sr-only sm:not-sr-only">Search…</span>
+              <kbd className="ml-2 hidden text-xs text-muted-foreground sm:inline">
+                Ctrl K
+              </kbd>
+            </Button>
+            <Button onClick={() => setCreateOpen(true)}>
+              <Plus />
+              <span className="sr-only sm:not-sr-only">New board</span>
+            </Button>
             <ModeToggle />
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          <Outlet />
+          <Outlet context={actions} />
         </div>
       </SidebarInset>
+
+      <CommandMenu
+        open={commandOpen}
+        onOpenChange={setCommandOpen}
+        pages={items.map((i) => ({
+          label: i.title,
+          to: i.url,
+          icon: i.icon,
+        }))}
+        boards={boards.data ?? []}
+        onNavigate={(to) => void navigate(to)}
+        onCreateBoard={() => setCreateOpen(true)}
+      />
+      <CreateBoardDialog
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        onCreate={async (input) => {
+          const board = await createBoard.mutateAsync(input);
+          void navigate(`/board/${board.id}`);
+        }}
+      />
     </SidebarProvider>
   );
 }

@@ -1,3 +1,4 @@
+import { NuqsAdapter } from "nuqs/adapters/react-router/v8";
 import {
   Outlet,
   RouterProvider,
@@ -8,19 +9,24 @@ import {
 import { ErrorBoundary } from "@repo/ui/blocks/error-boundary";
 
 import { ShellLayout } from "@/layouts/shell";
+import { BoardPage } from "@/pages/board";
+import { DashboardPage } from "@/pages/dashboard";
 import { LandingPage } from "@/pages/landing";
 import { NotFoundPage } from "@/pages/not-found";
 import { SettingsPage } from "@/pages/settings";
 import { SignInPage } from "@/pages/sign-in";
 import { SignUpPage } from "@/pages/sign-up";
 
+// A board keeps its filters in the address (nuqs), and the adapter reads the router, so it sits inside it.
 // A page that fails to render shows a message instead of a blank screen; moving to another page clears it.
 export function Root() {
   const { pathname } = useLocation();
   return (
-    <ErrorBoundary key={pathname}>
-      <Outlet />
-    </ErrorBoundary>
+    <NuqsAdapter>
+      <ErrorBoundary key={pathname}>
+        <Outlet />
+      </ErrorBoundary>
+    </NuqsAdapter>
   );
 }
 
@@ -33,7 +39,11 @@ const router = createBrowserRouter([
       { path: "/sign-up", element: <SignUpPage /> },
       {
         element: <ShellLayout />,
-        children: [{ path: "/settings", element: <SettingsPage /> }],
+        children: [
+          { path: "/dashboard", element: <DashboardPage /> },
+          { path: "/board/:boardId", element: <BoardPage /> },
+          { path: "/settings", element: <SettingsPage /> },
+        ],
       },
       { path: "*", element: <NotFoundPage /> },
     ],
