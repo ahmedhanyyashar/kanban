@@ -23,6 +23,7 @@ import {
 
 import { useSignOut } from "@/hooks/use-sign-out";
 import { authClient } from "@/lib/auth-client";
+import { APP_HOME } from "@/lib/routes";
 
 import { UserMenu } from "./user-menu";
 
@@ -80,7 +81,7 @@ function Shell({ user, items }: ShellProps) {
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton render={<NavLink to="/settings" />}>
+              <SidebarMenuButton render={<NavLink to={APP_HOME} />}>
                 <span className="text-base font-semibold">Flowboard</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
