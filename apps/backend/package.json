@@ -1,0 +1,44 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@nestjs/common": "catalog:",
+    "@nestjs/core": "catalog:",
+    "@nestjs/platform-express": "catalog:",
+    "@opentelemetry/exporter-trace-otlp-http": "catalog:",
+    "@opentelemetry/instrumentation-express": "catalog:",
+    "@opentelemetry/instrumentation-http": "catalog:",
+    "@opentelemetry/instrumentation-nestjs-core": "catalog:",
+    "@opentelemetry/sdk-node": "catalog:",
+    "helmet": "catalog:",
+    "nestjs-pino": "catalog:",
+    "nestjs-zod": "catalog:",
+    "pino-http": "catalog:",
+    "pino-pretty": "catalog:",
+    "rxjs": "catalog:",
+    "zod": "catalog:",
+    "@nestjs/throttler": "catalog:"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "catalog:",
+    "@nestjs/testing": "catalog:",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/express": "catalog:",
+    "@types/node": "catalog:",
+    "@types/supertest": "catalog:",
+    "eslint": "catalog:",
+    "supertest": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

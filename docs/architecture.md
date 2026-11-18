@@ -17,6 +17,19 @@ Keep it current: a pull request that adds or moves an app, package, web feature 
 | `docs`                                    | This map and the decisions                                            |
 | `scripts`                                 | Repository scripts, such as the check that this map is complete       |
 
+### `apps/backend`: the API
+
+Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modules).
+
+| Path                                                     | What it holds                                                                |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `src/env.ts`                                             | The validated environment; the only place that reads `process.env`           |
+| `apps/backend/src/modules/health`                        | Liveness                                                                     |
+| `src/lib/filters`, `interceptors`                        | The error shape and the `{ success, data }` envelope, applied to every route |
+| `src/lib/logger`, `request-id`, `rate-limit`, `shutdown` | Logging, request ids, the default rate limit, graceful shutdown              |
+| `src/instrumentation.ts`                                 | OpenTelemetry tracing, started only when an endpoint is configured           |
+| `test`                                                   | Tests that boot the app                                                      |
+
 ### `packages`
 
 | Path                         | What it holds                                                           |
