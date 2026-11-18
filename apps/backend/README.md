@@ -4,14 +4,15 @@ NestJS API with structured logging (`nestjs-pino`), OpenTelemetry tracing, Swagg
 
 ## Scripts
 
-| Command                             | What it does                        |
-| ----------------------------------- | ----------------------------------- |
-| `pnpm --filter backend dev`         | Run in watch mode                   |
-| `pnpm --filter backend build`       | Compile to `dist/`                  |
-| `pnpm --filter backend start`       | Run the compiled app                |
-| `pnpm --filter backend test`        | Unit and integration tests (Vitest) |
-| `pnpm --filter backend check-types` | Type-check                          |
-| `pnpm --filter backend lint`        | Lint                                |
+| Command                             | What it does                                                                           |
+| ----------------------------------- | -------------------------------------------------------------------------------------- |
+| `pnpm --filter backend dev`         | Run in watch mode                                                                      |
+| `pnpm --filter backend build`       | Compile to `dist/`                                                                     |
+| `pnpm --filter backend start`       | Run the compiled app                                                                   |
+| `pnpm --filter backend test`        | Unit and integration tests (Vitest)                                                    |
+| `pnpm --filter backend test:e2e`    | End-to-end tests against a throwaway Postgres (Testcontainers; Docker must be running) |
+| `pnpm --filter backend check-types` | Type-check                                                                             |
+| `pnpm --filter backend lint`        | Lint                                                                                   |
 
 ## Environment
 

@@ -41,6 +41,7 @@
           { "context": "test" },
           { "context": "build" },
           { "context": "api-contract" },
+          { "context": "api-e2e" },
           { "context": "commits" }
         ]
       }
