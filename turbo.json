@@ -6,6 +6,7 @@
     "DATABASE_URL",
     "SEED_PASSWORD",
     "SEED_EMAIL_DOMAIN",
+    "E2E_API",
     "CI"
   ],
   "tasks": {

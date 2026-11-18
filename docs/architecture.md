@@ -55,6 +55,7 @@ Start at `src/main.tsx` (mounts the app), `src/components/providers.tsx` (theme,
 | `src/providers`               | The query client                                                                                          |
 | `src/hooks`                   | Hooks used across pages, such as the page title                                                           |
 | `src/env.ts`                  | The validated environment (`VITE_*` values are public: Vite inlines them)                                 |
+| `e2e`                         | Playwright specs: sign-up and sign-in, public-page accessibility, every signed-in page                    |
 | `src/router.tsx`              | The routes, and the boundary that shows a message when a page fails to render and clears it on navigation |
 
 ### `packages`

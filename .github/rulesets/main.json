@@ -42,7 +42,10 @@
           { "context": "build" },
           { "context": "api-contract" },
           { "context": "api-e2e" },
-          { "context": "commits" }
+          { "context": "web-e2e" },
+          { "context": "lighthouse" },
+          { "context": "commits" },
+          { "context": "a11y" }
         ]
       }
     }
