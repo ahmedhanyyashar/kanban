@@ -1,4 +1,5 @@
 import { test as visitor, type Page } from "@playwright/test";
+import { z } from "zod";
 
 import { checkA11y } from "./axe";
 import { expect, test } from "./fixtures";
@@ -41,6 +42,32 @@ test("every signed-in page is accessible in both themes and fits a phone", async
       expect(overflow, `${name} scrolls sideways`).toBeLessThanOrEqual(0);
       await page.setViewportSize({ width: 1280, height: 720 });
     });
+  }
+});
+
+test("a board scrolls inside itself and never widens the page", async ({
+  page,
+}) => {
+  const created = await page.request.post("http://localhost:3001/boards", {
+    headers: { Origin: "http://localhost:3100" },
+    data: { title: "Wide board" },
+  });
+  expect(created.ok()).toBe(true);
+  const { data } = z
+    .object({ data: z.object({ board: z.object({ id: z.string() }) }) })
+    .parse(await created.json());
+
+  for (const width of [1024, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto(`/board/${data.board.id}`);
+    await shown(page);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
+    expect(
+      overflow,
+      `the board page is ${overflow}px too wide at ${width}px`,
+    ).toBeLessThanOrEqual(0);
   }
 });
 

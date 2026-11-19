@@ -158,7 +158,12 @@ export const Hero = () => (
             <ButtonLink to="/sign-up" size="lg" variant="secondary">
               Get started <ArrowRight />
             </ButtonLink>
-            <ButtonLink to="/sign-in" size="lg" variant="outline">
+            <ButtonLink
+              to="/sign-in"
+              size="lg"
+              variant="outline"
+              className="text-foreground"
+            >
               Live demo
             </ButtonLink>
           </div>

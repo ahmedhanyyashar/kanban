@@ -113,7 +113,7 @@ export function KanbanBoard({
       onDragEnd={handleDragEnd}
       onDragCancel={() => setActiveTask(null)}
     >
-      <div className="flex h-full gap-5 overflow-x-auto px-6 pb-6">
+      <div className="relative flex h-full gap-5 overflow-x-auto px-6 pb-6">
         {columns.map((column, index) => {
           const columnTasks = groups.get(column.id) ?? [];
           return (

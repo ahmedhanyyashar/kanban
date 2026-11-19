@@ -158,7 +158,7 @@ function Shell({ user, items }: ShellProps) {
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset id="main" tabIndex={-1} className="outline-none">
+      <SidebarInset id="main" tabIndex={-1} className="min-w-0 outline-none">
         <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mx-2 h-4" />
