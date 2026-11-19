@@ -39,14 +39,6 @@ export function createAuth(db: PrismaClient) {
           },
         }
       : {}),
-    // the session cookie is shared with the web app when both are subdomains of one domain
-    ...(env.COOKIE_DOMAIN
-      ? {
-          advanced: {
-            crossSubDomainCookies: { enabled: true, domain: env.COOKIE_DOMAIN },
-          },
-        }
-      : {}),
     trustedOrigins: [...webUrls],
     plugins: [
       admin({

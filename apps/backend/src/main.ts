@@ -3,7 +3,6 @@ import "./load-env";
 import { NestFactory } from "@nestjs/core";
 import type { NestExpressApplication } from "@nestjs/platform-express";
 import { SwaggerModule } from "@nestjs/swagger";
-import helmet from "helmet";
 import { Logger } from "nestjs-pino";
 
 import { AppModule } from "./app.module";
@@ -11,6 +10,8 @@ import { env } from "./env";
 import { sdk } from "./instrumentation";
 import { REQUEST_ID_HEADER } from "./lib/request-id/request-id.middleware";
 import { setupGracefulShutdown } from "./lib/shutdown/graceful-shutdown";
+import { securityHeaders } from "./lib/web/security-headers";
+import { serveWeb } from "./lib/web/serve-web";
 import { createDocument } from "./openapi";
 
 async function bootstrap() {
@@ -29,7 +30,7 @@ async function bootstrap() {
         ? false
         : Number(env.TRUST_PROXY),
   );
-  app.use(helmet());
+  app.use(securityHeaders);
   app.enableCors({
     origin: env.TRUSTED_ORIGINS.split(","),
     credentials: true,
@@ -40,6 +41,8 @@ async function bootstrap() {
 
   if (env.NODE_ENV !== "production")
     SwaggerModule.setup("docs", app, createDocument(app));
+
+  if (env.WEB_DIST) serveWeb(app, env.WEB_DIST);
 
   await app.listen(env.PORT);
   setupGracefulShutdown(app, sdk);

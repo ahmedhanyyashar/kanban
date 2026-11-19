@@ -1,14 +1,15 @@
-# The API on Render. The database is Neon: DATABASE_URL is set in the dashboard.
+# The whole app on Render: one service whose API also serves the web app, so both share one address.
+# The database is Neon: set DATABASE_URL in the dashboard when the service is created.
 services:
   - type: web
-    name: kanban-api
+    name: kanban
     runtime: docker
     dockerfilePath: apps/backend/Dockerfile
     dockerContext: .
     region: frankfurt
     plan: free
-    # deployed by the Deploy workflow once CI has passed, not on every push
-    autoDeployTrigger: "off"
+    # a commit goes live once its checks have passed on GitHub
+    autoDeployTrigger: checksPass
     healthCheckPath: /health/live
     envVars:
       - key: NODE_ENV
@@ -19,10 +20,6 @@ services:
         sync: false
       - key: BETTER_AUTH_SECRET
         generateValue: true
-      - key: BETTER_AUTH_URL
-        sync: false
-      - key: TRUSTED_ORIGINS
-        sync: false
-      # the shared domain (with a leading dot) when the web app and this API are subdomains of it
-      - key: COOKIE_DOMAIN
+      # optional: without it the AI features answer that they are not configured
+      - key: LLM_API_KEY
         sync: false

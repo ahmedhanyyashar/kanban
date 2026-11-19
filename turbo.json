@@ -7,6 +7,7 @@
     "SEED_PASSWORD",
     "SEED_EMAIL_DOMAIN",
     "E2E_API",
+    "RENDER_EXTERNAL_URL",
     "CI"
   ],
   "tasks": {
