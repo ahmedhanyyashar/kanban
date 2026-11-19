@@ -4,6 +4,8 @@
 
 It is a full-stack TypeScript project: a React single-page app and a NestJS API on PostgreSQL, sharing typed contracts, in one pnpm and Turborepo workspace. Built to be maintained, not only to run: tested at every level, checked for accessibility, and gated by a CI pipeline.
 
+**Live demo: <https://kanban.x10w1hqvjn1e6.eu-north-1.cs.amazonlightsail.com>** (press **Try the demo** on the sign-in page).
+
 ![Sign in, move a card, draft tasks with AI and watch a teammate's change arrive live](docs/images/demo.gif)
 
 Screenshots are in [docs/images](docs/images): the landing page, the dashboard, the board in both themes and on a phone, and the AI step.

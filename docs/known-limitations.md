@@ -4,7 +4,7 @@ What the project does not do, stated as plain facts. Each is a deliberate bounda
 
 ## Hosting and environments
 
-- **The app sleeps when idle.** Render's free plan stops the service (the API and the web app it serves) after a quiet period; the first request after that can take up to a minute. There is no CDN: every request goes to that one instance.
+- **The app sleeps when idle.** The database (Neon free) pauses after a quiet period, so the first request after one can take a few seconds. There is no CDN: every request goes to the one instance that serves the API and the web app.
 - **One environment.** There is local and production, with no staging or preview deployments.
 - **No documented backup or restore.** The database host's defaults apply; a restore has not been practised and no retention period is stated for any kind of data.
 - **Rollback is a revert, and a migration is not undone.** [deploying.md](deploying.md) says how to roll back; migrations are written expand before contract so the previous version keeps working, but a rollback of one has not been rehearsed.
@@ -78,7 +78,7 @@ What the project does not do, stated as plain facts. Each is a deliberate bounda
 
 ## Process
 
-- **No CODEOWNERS, changelog or version policy.** The branch rules are committed (`.github/rulesets`), and a release is a merge to `main` that Render puts live once its checks have passed.
+- **No CODEOWNERS, changelog or version policy.** The branch rules are committed (`.github/rulesets`), and a release is a merge to `main`, put live by hand (see [deploying.md](deploying.md)).
 - **No on-call runbook.** The architecture map has diagrams, the README says how to run the project, and [deploying.md](deploying.md) covers a release and a rollback; what to do when an alert fires is not written down, because there are no alerts.
 - **One dependency advisory is ignored.** picomatch has a high-severity ReDoS (GHSA-fc5q-39xc-vjpf) with no patched release yet; it is reached only through dev tooling. The entry is in `pnpm-workspace.yaml` and is removed once 4.0.8 is published.
 - **No SBOM or license check,** and build tooling versions are not pinned beyond the lockfile.

@@ -177,6 +177,6 @@ A failed move rolls A's cache back and shows a toast.
 | The live events                          | `apps/backend/src/modules/board/board.gateway.ts`, `apps/web/src/features/boards/lib/board-events.ts` |
 | Environment variables                    | `apps/backend/src/env.ts`, `apps/web/src/env.ts`, and the `.env.example` next to each                 |
 | CI, security scans, deploys              | `.github/workflows`                                                                                   |
-| How it is put live, and the variables    | [deploying.md](deploying.md), `render.yaml`, `apps/backend/Dockerfile`                                |
+| How it is put live, and the variables    | [deploying.md](deploying.md), `apps/backend/Dockerfile`                                               |
 | The branch rules and repository settings | `.github/rulesets/main.json`, `.github/settings.sh`, [CONTRIBUTING.md](../CONTRIBUTING.md)            |
 | Demo data                                | `apps/backend/scripts/seed.ts`                                                                        |
