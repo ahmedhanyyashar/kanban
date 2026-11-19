@@ -34,7 +34,7 @@ The schema is `prisma/schema.prisma`; the client is generated into `src/generate
 
 ## Sign-in
 
-better-auth keeps accounts and sessions in the four auth tables (`prisma/migrations/0001_init`). Email and password work always; Google sign-in turns on when both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set. Every route needs a session unless it says `@AllowAnonymous()`. The session cookie belongs to the API's own host; set `COOKIE_DOMAIN` (for example `.example.com`) when the web app and the API are subdomains of one domain, and it is shared with the web app. Sign-in and sign-up are limited to 5 requests a minute per address, in every environment. `pnpm auth:seed` creates an account per role (`<role>@example.com`) and, outside production, six people with a sample board; running it again changes nothing. the password is `SEED_PASSWORD`, which outside production defaults to `password1234`.
+better-auth keeps accounts and sessions in the four auth tables (`prisma/migrations/0001_init`). Email and password work always; Google sign-in turns on when both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set. Every route needs a session unless it says `@AllowAnonymous()`. The session cookie belongs to the API's own host, which in production also serves the web app. Sign-in and sign-up are limited to 5 requests a minute per address, in every environment. `pnpm auth:seed` creates an account per role (`<role>@example.com`) and, outside production, six people with a sample board; running it again changes nothing. the password is `SEED_PASSWORD`, which outside production defaults to `password1234`.
 
 ## Boards and access
 

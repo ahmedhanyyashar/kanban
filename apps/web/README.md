@@ -15,7 +15,7 @@ The single-page app: React 19 on Vite, react-router, TanStack Query, Tailwind an
 
 ## Environment
 
-Declared and validated in `src/env.ts`; see `.env.example`. `VITE_API_URL` is where the API runs (default `http://localhost:3001`). Vite inlines `VITE_*` values into the bundle, so they are public: never put a secret in one. Turborepo includes them in the build's cache key, so a build for another API address is never served from the cache.
+Declared and validated in `src/env.ts`; see `.env.example`. `VITE_API_URL` is where the API runs: in development it defaults to `http://localhost:3001`, and in a build to the page's own address, because the API serves the built web app. Vite inlines `VITE_*` values into the bundle, so they are public: never put a secret in one. Turborepo includes them in the build's cache key, so a build for another API address is never served from the cache.
 
 ## Structure
 

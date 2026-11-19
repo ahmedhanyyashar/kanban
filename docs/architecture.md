@@ -48,7 +48,7 @@ flowchart TD
 | ----------------------------------------- | --------------------------------------------------------------------------------- |
 | `package.json`, `turbo.json`              | The workspace scripts and the Turborepo task graph                                |
 | `pnpm-workspace.yaml`                     | The workspace, and the `catalog:` that holds every dependency version             |
-| `.github/workflows`                       | CI, security scans, accessibility and deploy                                      |
+| `.github/workflows`                       | CI, security scans and accessibility                                              |
 | `.github/rulesets`, `.github/settings.sh` | The branch rules and repository settings, applied with the CLI                    |
 | `docs`                                    | This map, the decisions, the known limitations and the generated OpenAPI document |
 | `scripts`                                 | Repository scripts, such as the check that this map is complete                   |
@@ -74,6 +74,7 @@ Start at `src/main.ts` (boots the app), then `src/app.module.ts` (lists the modu
 | `src/lib/serialization`                                  | Converts database decimals to numbers at the boundary                                                     |
 | `src/lib/filters`, `interceptors`                        | The error shape and the `{ success, data }` envelope, applied to every route                              |
 | `src/lib/logger`, `request-id`, `rate-limit`, `shutdown` | Logging, request ids, the default rate limit, graceful shutdown                                           |
+| `src/lib/web`                                            | Serves the built web app from the API's own address, and sets the security headers                        |
 | `Dockerfile`                                             | The production image of the API (Node 24, non-root); it applies the migrations when it starts             |
 | `src/instrumentation.ts`                                 | OpenTelemetry tracing, started only when an endpoint is configured                                        |
 | `scripts/seed.ts`                                        | An account for each role and, outside production, a sample board                                          |
@@ -163,19 +164,19 @@ A failed move rolls A's cache back and shows a toast.
 
 ## Where to look
 
-| I want to change…                        | Start here                                                                                              |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| A route or its answer                    | `apps/backend/src/modules/<module>` (DTO and `*.responses.ts`), then `pnpm api:generate`                |
-| Who may do what                          | `packages/shared/src/board-role.ts`, `apps/backend/src/modules/board/board.guard.ts`                    |
-| A text length limit                      | `packages/shared/src/limits.ts`                                                                         |
-| The database                             | `apps/backend/prisma/schema.prisma` plus a new migration                                                |
-| What a screen shows                      | `apps/web/src/pages/<page>.tsx`, then `apps/web/src/features/<feature>`                                 |
-| How the board moves and updates          | `apps/web/src/features/boards` (`components/kanban-board.tsx`, `hooks/use-board-realtime.ts`)           |
-| Colours, spacing, dark mode              | `packages/ui/src/globals.css`                                                                           |
-| A button, dialog or other component      | `packages/ui/src/components`, composed blocks in `packages/ui/src/blocks`                               |
-| The live events                          | `apps/backend/src/modules/board/board.gateway.ts`, `apps/web/src/features/boards/lib/board-events.ts`   |
-| Environment variables                    | `apps/backend/src/env.ts`, `apps/web/src/env.ts`, and the `.env.example` next to each                   |
-| CI, security scans, deploys              | `.github/workflows`                                                                                     |
-| How it is put live, and the variables    | [deploying.md](deploying.md), `.github/workflows/deploy.yml`, `render.yaml`, `apps/web/public/_headers` |
-| The branch rules and repository settings | `.github/rulesets/main.json`, `.github/settings.sh`, [CONTRIBUTING.md](../CONTRIBUTING.md)              |
-| Demo data                                | `apps/backend/scripts/seed.ts`                                                                          |
+| I want to change…                        | Start here                                                                                            |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| A route or its answer                    | `apps/backend/src/modules/<module>` (DTO and `*.responses.ts`), then `pnpm api:generate`              |
+| Who may do what                          | `packages/shared/src/board-role.ts`, `apps/backend/src/modules/board/board.guard.ts`                  |
+| A text length limit                      | `packages/shared/src/limits.ts`                                                                       |
+| The database                             | `apps/backend/prisma/schema.prisma` plus a new migration                                              |
+| What a screen shows                      | `apps/web/src/pages/<page>.tsx`, then `apps/web/src/features/<feature>`                               |
+| How the board moves and updates          | `apps/web/src/features/boards` (`components/kanban-board.tsx`, `hooks/use-board-realtime.ts`)         |
+| Colours, spacing, dark mode              | `packages/ui/src/globals.css`                                                                         |
+| A button, dialog or other component      | `packages/ui/src/components`, composed blocks in `packages/ui/src/blocks`                             |
+| The live events                          | `apps/backend/src/modules/board/board.gateway.ts`, `apps/web/src/features/boards/lib/board-events.ts` |
+| Environment variables                    | `apps/backend/src/env.ts`, `apps/web/src/env.ts`, and the `.env.example` next to each                 |
+| CI, security scans, deploys              | `.github/workflows`                                                                                   |
+| How it is put live, and the variables    | [deploying.md](deploying.md), `render.yaml`, `apps/backend/Dockerfile`                                |
+| The branch rules and repository settings | `.github/rulesets/main.json`, `.github/settings.sh`, [CONTRIBUTING.md](../CONTRIBUTING.md)            |
+| Demo data                                | `apps/backend/scripts/seed.ts`                                                                        |

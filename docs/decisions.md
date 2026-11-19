@@ -16,11 +16,11 @@ Short records of the choices that shaped the code: what was chosen, why, and wha
 
 ## 1. Where it runs
 
-The web app is on Cloudflare Pages, the API on Render, the database on Neon.
+One Render service runs the API, which also serves the built web app; the database is on Neon.
 
-- **Why:** each has a free tier, the web app is a static build that a CDN serves, and nothing needs a network or a cluster to operate. The project is a frontend showcase; the host should not be the larger part of it.
-- **Alternatives:** a container platform on AWS (more to show, but it costs a few dollars a day); one host for everything (no CDN for the web app).
-- **Consequences:** the API's free plan sleeps when idle, so the first request after a pause is slow. The web app and the API are on different sites, so the sign-in cookie is third-party for the browser; a same-site route to the API (a Pages Function that forwards `/api`) is the way out if a browser blocks it. Decide when sign-in is built.
+- **Why:** both have a free tier, nothing needs a network or a cluster to operate, and one address means the session cookie is first-party and there is no cross-origin traffic. The project is a showcase and has no domain or budget; the host should not be the larger part of it.
+- **Alternatives:** the web app on a static host and the API elsewhere (the cookie is then third-party and Safari and Firefox block it, which needs a shared domain to fix; a proxy in front would carry the live-updates connection badly); a container platform on AWS (more to show, but it costs a few dollars a day).
+- **Consequences:** the free plan sleeps when idle, so the first request after a pause is slow, and there is no CDN. The web and the API deploy together. The service learns its own address from Render (`RENDER_EXTERNAL_URL`), so nothing about it is configured by hand.
 
 ## 2. TypeScript and ESLint are held back
 
