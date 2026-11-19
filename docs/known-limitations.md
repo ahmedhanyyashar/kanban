@@ -4,17 +4,17 @@ What the project does not do, stated as plain facts. Each is a deliberate bounda
 
 ## Hosting and environments
 
-- **The API sleeps when idle.** Render's free plan stops a service after a quiet period; the first request after that takes several seconds.
+- **The app sleeps when idle.** Render's free plan stops the service (the API and the web app it serves) after a quiet period; the first request after that can take up to a minute. There is no CDN: every request goes to that one instance.
 - **One environment.** There is local and production, with no staging or preview deployments.
 - **No documented backup or restore.** The database host's defaults apply; a restore has not been practised and no retention period is stated for any kind of data.
-- **Rollback is a revert, and a migration is not undone.** [deploying.md](deploying.md) says how to roll back the API and the web app; migrations are written expand before contract so the previous version keeps working, but a rollback of one has not been rehearsed.
+- **Rollback is a revert, and a migration is not undone.** [deploying.md](deploying.md) says how to roll back; migrations are written expand before contract so the previous version keeps working, but a rollback of one has not been rehearsed.
 - **No feature flags.** A change goes live, or does not, with the deploy.
 
 ## Authentication and sessions
 
 - **Email and password only, no email.** There is no email verification, password reset, list of sessions, "sign out everywhere" or account deletion. Google sign-in works only when its two variables are set, which they are not by default.
 - **Session lifetime is the library's default.** Expiry, idle timeout and the number of devices were not decided.
-- **The session cookie needs one domain.** It works on localhost, and on subdomains of one domain when `COOKIE_DOMAIN` is set. Hosts that are unrelated sites (`*.pages.dev` with `*.onrender.com`) are not supported, because browsers may refuse the cookie; the deployed arrangement has not been tried.
+- **The web app and the API share one address.** The API serves the built web app, so the session cookie is first-party. Putting them on unrelated hosts is not supported: browsers may refuse a cookie set by the other site.
 - **Rate limits live in memory.** The global limit (120 requests a minute) and the stricter sign-in and sign-up limits count per address and per running instance, so they reset on restart and are not shared if the API runs more than once. There is no per-person limit.
 - **A session that ended keeps live updates for up to 30 seconds.** The API checks every connected socket on that interval. The browser leaves the board within seconds in most cases, but a person who closes the lid with a socket open is covered only by the sweep. The check costs one session lookup per connected socket.
 - **A draft is lost when the session ends.** Whatever was typed into an open dialog is gone after the redirect to sign-in; the return path keeps the page, not the draft.
@@ -26,7 +26,7 @@ What the project does not do, stated as plain facts. Each is a deliberate bounda
 - **No per-person caps on sockets or rooms.** One person can open many connections; cursor events are throttled by time only.
 - **AI has no per-person quota or cost cap.** Each AI route is limited to 10 requests a minute per address and each call to 30 seconds, but a person on many addresses is not limited. A model call is slow and paid.
 - **No privacy policy, terms, cookie notice, data export or data deletion** for people who sign up.
-- **Security headers are set by the static host.** `apps/web/public/_headers` carries a Content Security Policy and the usual headers, with the API's address filled in at deploy time. The policy allows inline styles (the animation library and per-board colours need them) and the Google Fonts stylesheet; it has not been tested against a deployed site.
+- **Security headers come from the API.** `apps/backend/src/lib/web/security-headers.ts` sets a Content Security Policy and the usual headers on every response, the app's pages included. The policy allows inline styles (the animation library and per-board colours need them) and the Google Fonts stylesheet; it has not been tested against a deployed site.
 - **User text is shown as text by convention.** There is no written output-safety policy, no HTML or markdown in descriptions, and no attachments.
 - **Errors reach the person with the API's own messages.** They were written for people, but they have not been reviewed for what they confirm about other records.
 - **No threat model or penetration test.**
@@ -78,7 +78,7 @@ What the project does not do, stated as plain facts. Each is a deliberate bounda
 
 ## Process
 
-- **No CODEOWNERS, changelog or version policy.** The branch rules are committed (`.github/rulesets`), and a release is a merge to `main` that the Deploy workflow puts live.
+- **No CODEOWNERS, changelog or version policy.** The branch rules are committed (`.github/rulesets`), and a release is a merge to `main` that Render puts live once its checks have passed.
 - **No on-call runbook.** The architecture map has diagrams, the README says how to run the project, and [deploying.md](deploying.md) covers a release and a rollback; what to do when an alert fires is not written down, because there are no alerts.
 - **One dependency advisory is ignored.** picomatch has a high-severity ReDoS (GHSA-fc5q-39xc-vjpf) with no patched release yet; it is reached only through dev tooling. The entry is in `pnpm-workspace.yaml` and is removed once 4.0.8 is published.
 - **No SBOM or license check,** and build tooling versions are not pinned beyond the lockfile.
