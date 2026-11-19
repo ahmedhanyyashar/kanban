@@ -20,6 +20,7 @@ import {
 } from "@repo/ui/components/field";
 import { Input } from "@repo/ui/components/input";
 
+import { env } from "@/env";
 import { usePageTitle } from "@/hooks/use-page-title";
 import { authClient } from "@/lib/auth-client";
 import { APP_HOME } from "@/lib/routes";
@@ -45,7 +46,7 @@ export function SignInPage() {
   // someone who is already signed in has no use for this page
   if (session) return <Navigate to={redirectTo} replace />;
 
-  async function onSubmit(data: Schema) {
+  async function signIn(data: Schema) {
     const { error } = await authClient.signIn.email(data);
     if (error) {
       toast.error(error.message ?? "Sign in failed");
@@ -66,7 +67,7 @@ export function SignInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={(event) => void form.handleSubmit(onSubmit)(event)}>
+          <form onSubmit={(event) => void form.handleSubmit(signIn)(event)}>
             <FieldGroup>
               <Controller
                 name="email"
@@ -110,6 +111,16 @@ export function SignInPage() {
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Signing in..." : "Sign In"}
               </Button>
+              {env.demo && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={form.formState.isSubmitting}
+                  onClick={() => env.demo && void signIn(env.demo)}
+                >
+                  Try the demo
+                </Button>
+              )}
             </FieldGroup>
           </form>
           <p className="mt-5 text-center text-sm text-muted-foreground">

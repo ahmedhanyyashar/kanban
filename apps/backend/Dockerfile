@@ -22,7 +22,10 @@ COPY --from=deps /app ./
 COPY . .
 # `prisma generate` reads this to load its config but never connects
 ENV DATABASE_URL=postgresql://build:build@localhost:5432/build
-# No VITE_API_URL: the web app calls the address it was served from
+# No VITE_API_URL: the web app calls the address it was served from.
+# Pass both to put a "Try the demo" button on the sign-in page (a public demo account).
+ARG VITE_DEMO_EMAIL
+ARG VITE_DEMO_PASSWORD
 RUN pnpm turbo run build --filter=backend --filter=web
 # What the API needs to run and nothing else: its production dependencies, the built workspace
 # packages copied in (no symlinks), and the files listed in its package.json.
