@@ -16,11 +16,11 @@ Short records of the choices that shaped the code: what was chosen, why, and wha
 
 ## 1. Where it runs
 
-One Render service runs the API, which also serves the built web app; the database is on Neon.
+One container service on AWS Lightsail runs the API, which also serves the built web app; the database is on Neon.
 
-- **Why:** both have a free tier, nothing needs a network or a cluster to operate, and one address means the session cookie is first-party and there is no cross-origin traffic. The project is a showcase and has no domain or budget; the host should not be the larger part of it.
-- **Alternatives:** the web app on a static host and the API elsewhere (the cookie is then third-party and Safari and Firefox block it, which needs a shared domain to fix; a proxy in front would carry the live-updates connection badly); a container platform on AWS (more to show, but it costs a few dollars a day).
-- **Consequences:** the free plan sleeps when idle, so the first request after a pause is slow, and there is no CDN. The web and the API deploy together. The service learns its own address from Render (`RENDER_EXTERNAL_URL`), so nothing about it is configured by hand.
+- **Why:** one address means the session cookie is first-party and there is no cross-origin traffic, and the project has no domain. Lightsail gives a container an HTTPS address for a flat few dollars a month; Neon is free and does not expire.
+- **Alternatives:** the web app on a static host and the API elsewhere (the cookie is then third-party and Safari and Firefox block it, which needs a shared domain to fix); Render or Cloudflare (a card or a paid plan is needed to run a container); App Runner (no documented websocket support, and the live updates need one).
+- **Consequences:** the web and the API deploy together, there is no CDN, and a release is pushed by hand (a deploy from CI is a later step).
 
 ## 2. TypeScript and ESLint are held back
 
