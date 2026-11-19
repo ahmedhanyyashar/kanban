@@ -20,12 +20,4 @@ export const envSchema = z.object({
 });
 
 // The only place this app reads the environment.
-//
-// Render tells a service its own public address. The API serves the web app, so that one address is both the
-// base URL and the only trusted origin, and nothing needs configuring (a value set by hand still wins).
-const ownAddress = process.env["RENDER_EXTERNAL_URL"];
-export const env = envSchema.parse({
-  BETTER_AUTH_URL: ownAddress,
-  TRUSTED_ORIGINS: ownAddress,
-  ...process.env,
-});
+export const env = envSchema.parse(process.env);
