@@ -6,14 +6,15 @@ Live: https://kanban.x10w1hqvjn1e6.eu-north-1.cs.amazonlightsail.com (sign in wi
 
 ## Configuration
 
-| Variable                                | Value                                                                         |
-| --------------------------------------- | ----------------------------------------------------------------------------- |
-| `DATABASE_URL`                          | Neon's **direct** connection string (host without `-pooler`)                  |
-| `BETTER_AUTH_SECRET`                    | A random string of 32 characters or more                                      |
-| `BETTER_AUTH_URL`, `TRUSTED_ORIGINS`    | The service's public address, without a trailing slash                        |
-| `NODE_ENV`, `TRUST_PROXY`               | `production`, `1`                                                             |
-| `LLM_API_KEY`                           | Optional. Without it the AI actions answer "AI is not configured"             |
-| `VITE_DEMO_EMAIL`, `VITE_DEMO_PASSWORD` | Build arguments, not run-time variables: they add **Try the demo** to sign-in |
+| Variable                                | Value                                                                                                                                               |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                          | Neon's **direct** connection string (host without `-pooler`)                                                                                        |
+| `BETTER_AUTH_SECRET`                    | A random string of 32 characters or more                                                                                                            |
+| `BETTER_AUTH_URL`, `TRUSTED_ORIGINS`    | The service's public address, without a trailing slash                                                                                              |
+| `NODE_ENV`, `TRUST_PROXY`               | `production`, `1`                                                                                                                                   |
+| `LLM_API_KEY`                           | A Google AI Studio key. Without it the AI actions answer "AI is not configured"                                                                     |
+| `LLM_MODEL`                             | Optional. Live runs `gemini-flash-lite-latest`: the default alias is often overloaded, and retired models (`gemini-2.5-*`) are refused for new keys |
+| `VITE_DEMO_EMAIL`, `VITE_DEMO_PASSWORD` | Build arguments, not run-time variables: they add **Try the demo** to sign-in                                                                       |
 
 The container applies pending migrations when it starts, which is why the direct connection is required. Run-time variables are listed in the service's deployment; the demo arguments are baked into the web build.
 
