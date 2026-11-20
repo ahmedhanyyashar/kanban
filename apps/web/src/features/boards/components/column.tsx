@@ -86,7 +86,7 @@ export function Column({
 
       <div
         ref={setNodeRef}
-        className="no-scrollbar flex flex-1 flex-col gap-2.5 overflow-y-auto px-0.5 pb-1"
+        className="no-scrollbar flex flex-1 flex-col gap-2.5 overflow-y-auto px-0.5 pt-1 pb-1"
       >
         <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
           <ul className="flex flex-col gap-2.5">{children}</ul>
