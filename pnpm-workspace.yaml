@@ -42,7 +42,7 @@ catalog:
   "@testing-library/dom": ^10.4.2
   "@testing-library/react": ^16.3.3
   "@thallesp/nestjs-better-auth": ^2.8.0
-  "@tsconfig/node-lts": ^24.0.1
+  "@tsconfig/node-lts": ^26.0.1
   "@tsconfig/strictest": ^2.0.8
   "@types/culori": ^4.0.1
   "@types/express": ^5.0.6
