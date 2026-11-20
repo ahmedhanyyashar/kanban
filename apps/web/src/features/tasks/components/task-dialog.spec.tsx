@@ -37,7 +37,7 @@ function renderDialog(overrides: { task?: typeof task | null } = {}) {
     onOpenChange: vi.fn(),
     onSubmit: vi.fn().mockResolvedValue(undefined),
     onDelete: vi.fn(),
-    onBreakdown: vi.fn(),
+    onBreakdown: vi.fn().mockResolvedValue(true),
   };
   render(
     <TaskDialog
@@ -107,6 +107,20 @@ describe("TaskDialog", () => {
       "value",
       "Write docs",
     );
+  });
+
+  it("closes once the breakdown has added its subtasks, and stays open to retry when it fails", async () => {
+    const { onBreakdown, onOpenChange } = renderDialog({ task });
+    fireEvent.click(screen.getByRole("button", { name: /AI breakdown/ }));
+    await waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(false));
+    expect(onBreakdown).toHaveBeenCalledWith("t1");
+    cleanup();
+
+    const failing = renderDialog({ task });
+    failing.onBreakdown.mockResolvedValue(false);
+    fireEvent.click(screen.getByRole("button", { name: /AI breakdown/ }));
+    await waitFor(() => expect(failing.onBreakdown).toHaveBeenCalled());
+    expect(failing.onOpenChange).not.toHaveBeenCalled();
   });
 
   it("asks before deleting, and only then deletes and closes", async () => {

@@ -22,7 +22,8 @@ type TaskDialogProps = {
   /** Create or update, as the caller decides. Rejecting keeps the dialog open. */
   onSubmit: (input: TaskInput) => Promise<void>;
   onDelete: (taskId: string) => void;
-  onBreakdown: (taskId: string) => void;
+  /** Resolves true when the subtasks were added: the dialog then closes, and stays open to retry otherwise. */
+  onBreakdown: (taskId: string) => Promise<boolean>;
   breakingDown: boolean;
 };
 
@@ -66,7 +67,10 @@ export function TaskDialog({
             onOpenChange(false);
           }}
           onBreakdown={() => {
-            if (task) onBreakdown(task.id);
+            if (!task) return;
+            void onBreakdown(task.id).then((added) => {
+              if (added) onOpenChange(false);
+            });
           }}
           breakingDown={breakingDown}
         />

@@ -113,7 +113,7 @@ function BoardContent({ boardId }: { boardId: string }) {
         members={members}
         onSubmit={page.saveTask}
         onDelete={page.deleteTask}
-        onBreakdown={(taskId) => void page.breakDown(taskId)}
+        onBreakdown={page.breakDown}
         breakingDown={page.breakingDown}
       />
       <AiGenerateDialog
