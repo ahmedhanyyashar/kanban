@@ -120,15 +120,18 @@ export function useBoardPage(boardId: string) {
       await taskMutations.create.mutateAsync({ columnId, ...draft });
   };
 
+  /** Adds the subtasks beside the task; true once they are in, so the caller can close what it was in. */
   const breakDown = async (taskId: string) => {
     const task = tasks?.find((t) => t.id === taskId);
-    if (!task) return;
+    if (!task) return false;
     try {
       const subtasks = await breakdown.mutateAsync(taskId);
       await addTasks(task.columnId, subtasks);
       toast.success(`Added ${subtasks.length} subtasks`);
+      return true;
     } catch (error) {
       toast.error(errorMessage(error, "The task could not be broken down."));
+      return false;
     }
   };
 

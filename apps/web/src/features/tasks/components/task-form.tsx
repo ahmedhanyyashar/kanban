@@ -67,6 +67,8 @@ export function TaskForm({
   });
 
   const [confirmOpen, setConfirmOpen] = useState(false);
+  // one thing at a time: saving, deleting and the AI each change the task, so none starts while another runs
+  const busy = form.formState.isSubmitting || breakingDown;
 
   // A failed save is reported in a toast and the form stays as it is, so nothing typed is lost.
   async function submit(values: TaskFormValues) {
@@ -177,6 +179,7 @@ export function TaskForm({
                   type="button"
                   variant="destructive"
                   onClick={() => setConfirmOpen(true)}
+                  disabled={busy}
                 >
                   <Trash2 /> Delete
                 </Button>
@@ -184,14 +187,14 @@ export function TaskForm({
                   type="button"
                   variant="outline"
                   onClick={onBreakdown}
-                  disabled={breakingDown}
+                  disabled={busy}
                 >
                   <GitBranch />
                   {breakingDown ? "Breaking down…" : "AI breakdown"}
                 </Button>
               </>
             )}
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+            <Button type="submit" disabled={busy}>
               {task ? "Save" : "Create task"}
             </Button>
           </DialogFooter>
