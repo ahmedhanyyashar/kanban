@@ -73,14 +73,16 @@ export function useBoardPage(boardId: string) {
   );
 
   const summary = useBoardSummary(boardId, dialog?.kind === "summary");
+  const summaryOpen = dialog?.kind === "summary";
   useEffect(() => {
-    if (!summary.isError) return;
+    // only while it was asked for: a failure kept in the cache must not be reported again on a later visit
+    if (!summaryOpen || !summary.isError) return;
     toast.error(
       errorMessage(summary.error, "The summary could not be written."),
     );
     // eslint-disable-next-line react-hooks/set-state-in-effect -- closes the dialog when its request fails
     setDialog(null);
-  }, [summary.isError, summary.error]);
+  }, [summaryOpen, summary.isError, summary.error]);
 
   const activities = useQuery({
     queryKey: boardKeys.activities(boardId),

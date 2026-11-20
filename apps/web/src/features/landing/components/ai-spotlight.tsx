@@ -74,9 +74,11 @@ export const AISpotlight = () => (
               </li>
             ))}
           </ul>
-          <ButtonLink to="/sign-up" size="lg" variant="secondary">
-            Try it <ArrowRight />
-          </ButtonLink>
+          <div className="mt-9">
+            <ButtonLink to="/sign-up" size="lg" variant="secondary">
+              Try it <ArrowRight />
+            </ButtonLink>
+          </div>
         </div>
 
         {/* mock UI */}
