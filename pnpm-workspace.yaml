@@ -121,3 +121,11 @@ auditConfig:
   # release (4.0.8) is not published yet: remove this entry when it is, and the audit passes without it.
   ignoreGhsas:
     - GHSA-fc5q-39xc-vjpf
+
+overrides:
+  # ReDoS in effect's template-literal schemas (GHSA-7589-6fvf-x4pw), pulled in by Prisma's config loader, which
+  # pins 3.20.0. Remove this when Prisma depends on a patched release.
+  "effect@<3.22.1": "3.22.5"
+
+minimumReleaseAgeExclude:
+  - effect@3.22.5
