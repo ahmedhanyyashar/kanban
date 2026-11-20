@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
@@ -42,6 +43,10 @@ export function SignInPage() {
     resolver: zodResolver(schema),
     defaultValues: { email: "", password: "" },
   });
+
+  // the demo button signs in without the form, so the form does not know it is busy
+  const [demoPending, setDemoPending] = useState(false);
+  const busy = form.formState.isSubmitting || demoPending;
 
   // someone who is already signed in has no use for this page
   if (session) return <Navigate to={redirectTo} replace />;
@@ -108,15 +113,19 @@ export function SignInPage() {
                   </Field>
                 )}
               />
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Signing in..." : "Sign In"}
+              <Button type="submit" disabled={busy}>
+                {busy ? "Signing in..." : "Sign In"}
               </Button>
               {env.demo && (
                 <Button
                   type="button"
                   variant="outline"
-                  disabled={form.formState.isSubmitting}
-                  onClick={() => env.demo && void signIn(env.demo)}
+                  disabled={busy}
+                  onClick={() => {
+                    if (!env.demo) return;
+                    setDemoPending(true);
+                    void signIn(env.demo).finally(() => setDemoPending(false));
+                  }}
                 >
                   Try the demo
                 </Button>
