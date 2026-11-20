@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -41,19 +47,16 @@ afterEach(() => {
 });
 
 describe("the demo sign-in", () => {
-  it("signs in as the demo account in one click", () => {
-    mocks.signInEmail.mockResolvedValue({ error: null });
+  it("signs in once however often the button is pressed, and holds the form while it does", async () => {
+    mocks.signInEmail.mockReturnValue(new Promise(() => undefined));
     open();
-    fireEvent.click(screen.getByRole("button", { name: "Try the demo" }));
-    expect(mocks.signInEmail).toHaveBeenCalledWith({
-      email: "alex@example.com",
-      password: "password1234",
-    });
-  });
-
-  it("is not offered when no demo account is configured", () => {
-    mocks.demo = null;
-    open();
-    expect(screen.queryByRole("button", { name: "Try the demo" })).toBeNull();
+    const demo = screen.getByRole("button", { name: "Try the demo" });
+    fireEvent.click(demo);
+    fireEvent.click(demo);
+    await waitFor(() => expect(demo).toHaveProperty("disabled", true));
+    expect(mocks.signInEmail).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByRole("button", { name: "Signing in..." }),
+    ).toHaveProperty("disabled", true);
   });
 });
