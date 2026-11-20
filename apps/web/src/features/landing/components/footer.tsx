@@ -1,4 +1,4 @@
-import { Zap, Layers } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Link } from "react-router";
 
 const columns: { heading: string; links: [string, string][] }[] = [
@@ -24,7 +24,7 @@ const isRoute = (href: string) => href.startsWith("/");
 
 export const Footer = () => (
   <footer className="border-t">
-    <div className="mx-auto max-w-6xl px-6 py-14">
+    <div className="mx-auto max-w-6xl px-6 pt-14 pb-8">
       <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
         {/* brand */}
         <div className="lg:col-span-2">
@@ -74,16 +74,8 @@ export const Footer = () => (
       </div>
 
       {/* bottom bar */}
-      <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t pt-6 text-sm text-muted-foreground sm:flex-row">
-        <span>
-          © {new Date().getFullYear()} Flowboard. All rights reserved.
-        </span>
-        <a
-          href="#top"
-          className="flex items-center gap-1.5 transition-colors hover:text-foreground"
-        >
-          <Layers className="h-4 w-4" /> Built with React, NestJS and PostgreSQL
-        </a>
+      <div className="mt-12 border-t pt-6 text-sm text-muted-foreground">
+        © {new Date().getFullYear()} Flowboard. All rights reserved.
       </div>
     </div>
   </footer>
